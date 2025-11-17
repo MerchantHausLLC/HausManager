@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" class="h-full dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HausManager – Sales / Orders</title>
+    <!-- Fonts and TailwindCSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Lexend:wght@100;400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Lexend', 'ui-sans-serif', 'system-ui'],
+              ubuntu: ['Ubuntu', 'sans-serif']
+            },
+            colors: {
+              brand: { 600: '#dc2743', 700: '#c21b35', 400: '#ef3c5b' },
+              'brand-green': '#6dffca'
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      :root {
+        --brand-400: #ef3c5b;
+        --brand-600: #dc2743;
+        --brand-700: #c21b35;
+        --brand-green: #6dffca;
+      }
+      .grad-text {
+        display: inline-block;
+        background: linear-gradient(90deg, #c21b35, #ef3c5b, #c21b35);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: gradientMove 4s ease infinite;
+        background-size: 200% 100%;
+      }
+      @keyframes gradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      body {
+        font-family: Lexend, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+      }
+      .header-glass {
+        background-color: rgba(28, 28, 28, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
+  <body class="h-full text-slate-100">
+    <div class="flex min-h-screen">
+      <!-- Sidebar navigation -->
+      <aside id="sidebar" class="w-64 hidden md:flex flex-col bg-slate-900/70 border-r border-slate-800">
+        <div class="h-16 flex items-center gap-3 px-4 border-b border-slate-800">
+        <img src="assets/images/logo.png" alt="HausManager logo" class="h-8 w-8" />
+          <div>
+            <span class="text-lg font-bold font-ubuntu grad-text">HausManager</span>
+            <span class="block text-sm font-semibold text-slate-400">Retail Manager</span>
+          </div>
+        </div>
+        <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
+          <a href="inventory.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5" />
+              <rect x="14" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5" />
+              <rect x="3" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5" />
+              <rect x="14" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            Inventory
+          </a>
+          <a href="products.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+            Products
+          </a>
+          <a href="orders.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-white bg-brand-600/20">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <path d="M6 6h12l1 4H5l1-4Zm-1 4h14l-1.2 8.4a1 1 0 0 1-.99.86H7.19a1 1 0 0 1-.99-.86L5 10Zm6 3v3" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+            Sales / Orders
+          </a>
+          <a href="transactions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+              <path d="M3 9h18" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+            Transactions
+          </a>
+          <a href="subscriptions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+              <path d="M8 7h8M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+            Subscriptions
+          </a>
+        </nav>
+      </aside>
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-16 header-glass border-b border-slate-800 flex items-center justify-between px-4 md:px-6">
+          <h1 class="text-lg font-semibold">Sales / Orders</h1>
+        </header>
+        <!-- Main content -->
+        <main class="flex-1 p-4 md:p-6 space-y-6">
+          <section class="bg-slate-900/40 border border-slate-800 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-semibold">Orders</h3>
+              <button id="new-order-btn" class="rounded-md border border-slate-800 px-3 py-1 text-xs hover:bg-slate-800">New Order</button>
+            </div>
+            <div class="mt-1 overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="text-left text-slate-400">
+                  <tr class="border-b border-slate-800">
+                    <th class="py-2 pr-4">Order ID</th>
+                    <th class="py-2 pr-4">Date</th>
+                    <th class="py-2 pr-4">Customer</th>
+                    <th class="py-2 pr-4">Items</th>
+                    <th class="py-2 pr-4">Amount</th>
+                    <th class="py-2 pr-4">Status</th>
+                    <th class="py-2 pr-4"></th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body" class="divide-y divide-slate-800">
+                  <!-- Dynamic rows inserted by main.js -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <!-- Include main.js as an ES module -->
+    <script type="module" src="assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" class="h-full dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HausManager – Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Lexend:wght@100;400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Lexend', 'system-ui', '-apple-system', 'Segoe UI', 'Ubuntu'],
+              display: ['Ubuntu', 'sans-serif']
+            },
+            colors: {
+              brand: { 600: '#dc2743', 700: '#c21b35', 400: '#ef3c5b' },
+              mint: '#6dffca'
+            },
+            boxShadow: {
+              glow: '0 10px 40px rgba(220,39,67,.35)'
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      body {
+        font-family: Lexend, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji',
+          'Segoe UI Emoji', sans-serif;
+      }
+      .page-bg::before {
+        content: '';
+        position: absolute;
+        inset: -20vmax;
+        background: radial-gradient(60vmax 60vmax at 15% 25%, rgba(220, 39, 67, 0.25), transparent 60%), radial-gradient(60vmax 60vmax at 85% 30%, rgba(109, 255, 202, 0.2), transparent 60%), radial-gradient(70vmax 70vmax at 50% 85%, rgba(226, 232, 240, 0.08), transparent 60%);
+        filter: blur(40px);
+        animation: drift 18s linear infinite;
+        z-index: 0;
+      }
+      @keyframes drift {
+        0% {
+          transform: translate3d(0, 0, 0) rotate(0deg);
+        }
+        50% {
+          transform: translate3d(1.8%, -1.2%, 0) rotate(180deg);
+        }
+        100% {
+          transform: translate3d(0, 0, 0) rotate(360deg);
+        }
+      }
+      .glow-wrap {
+        position: relative;
+        padding: 2px;
+        border-radius: 18px;
+        background: conic-gradient(from var(--angle), rgba(220, 39, 67, 0.95), rgba(220, 39, 67, 0.35) 18%, rgba(109, 255, 202, 0.95) 35%, rgba(220, 39, 67, 0.35) 52%, rgba(239, 60, 91, 0.95) 70%, rgba(109, 255, 202, 0.45) 86%, rgba(220, 39, 67, 0.95));
+        animation: spin 6s linear infinite;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 15px 60px rgba(220, 39, 67, 0.25);
+      }
+      @keyframes spin {
+        to {
+          --angle: 360deg;
+        }
+      }
+      .glow-wrap > .card {
+        border-radius: 16px;
+        background: rgba(22, 22, 22, 0.86);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
+  </head>
+  <body class="h-full bg-slate-950 text-slate-100 relative overflow-hidden">
+    <div class="page-bg absolute inset-0"></div>
+    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+      <div class="h-64 relative w-full flex flex-col items-center justify-center overflow-hidden rounded-md">
+        <h1 class="md:text-7xl text-5xl lg:text-6xl font-mono text-center text-white relative z-20">
+          HausManager
+        </h1>
+      </div>
+      <div class="w-full max-w-md">
+        <div class="glow-wrap">
+          <div class="card shadow-glow">
+            <div class="px-7 pt-7 pb-4">
+              <h1 class="font-display text-2xl tracking-tight">
+                Welcome to <span class="text-brand-400">HausManager</span>
+              </h1>
+            </div>
+            <form id="login-form" class="px-7 pb-7 space-y-4">
+              <div class="space-y-1.5">
+                <label for="email" class="text-sm text-slate-300">Email</label>
+                <input id="email" type="email" required autocomplete="username" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent" placeholder="you@example.com" />
+              </div>
+              <div class="space-y-1.5">
+                <label for="password" class="text-sm text-slate-300">Password</label>
+                <input id="password" type="password" required autocomplete="current-password" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent" placeholder="••••••••" />
+              </div>
+              <div id="login-error" class="text-red-500 text-sm hidden">Please enter both email and password.</div>
+              <button id="sign-in-btn" type="submit" class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-3 font-medium text-white transition-colors">
+                Sign In
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <p class="mt-6 text-center text-xs text-slate-500">
+        By signing in you agree to the <a class="hover:text-slate-300" href="#">Terms</a> and
+        <a class="hover:text-slate-300" href="#">Privacy Policy</a>.
+      </p>
+    </main>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorElem = document.getElementById('login-error');
+        if (!email || !password) {
+          errorElem.textContent = 'Please enter both email and password.';
+          errorElem.classList.remove('hidden');
+          return;
+        }
+        // For the purposes of this demo we skip authentication and redirect
+        // directly to the orders page. In a real application you would
+        // authenticate against the server here.
+        window.location.href = 'orders.html';
+      });
+    </script>
+  </body>
+</html>
