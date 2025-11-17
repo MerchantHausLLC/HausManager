@@ -22,6 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'login.html';
     return;
   }
+
+  // Theme toggler: apply saved preference and allow switching between
+  // dark and light modes.  The CSS uses CSS variables for colours.
+  const themeToggleButton = document.getElementById('theme-toggle');
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+  }
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      const current = document.body.classList.contains('light') ? 'light' : 'dark';
+      localStorage.setItem('theme', current);
+    });
+  }
   const merchantId = localStorage.getItem('merchantId') || '';
   document.getElementById('merchant-header').textContent = `Merchant Portal – ${merchantId}`;
 

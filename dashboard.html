@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MerchantHaus — Dashboard</title>
-  <!-- Fonts for stylised header text -->
+  <title>MerchantHaus — Dashboard (Improved)</title>
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <!-- Styles: dark theme similar to new portal -->
   <style>
-    /* Colour variables allow easy theme switching and alignment with the original OS‑style CRM */
     :root {
       --brand-red: #ef3c5b;
       --brand-green: #6dffca;
@@ -17,10 +17,9 @@
       --muted: #b3b3b3;
       --bg-surface: rgba(255, 255, 255, .06);
       --border-color: rgba(255, 255, 255, .12);
-      --main-bg: transparent;
+      --main-bg: #020617;
       --header-bg: rgba(0,0,0,.35);
     }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -28,7 +27,6 @@
       background-color: var(--main-bg);
       overflow: hidden;
     }
-
     header {
       position: fixed;
       left: 0;
@@ -71,11 +69,9 @@
       transition: background-color 0.2s;
     }
     .btn:hover { background: rgba(255,255,255,.1); }
-
-    /* Layout for the desktop dock */
     main {
       position: relative;
-      height: 100dvh;
+      height: 100vh;
       padding-top: 56px;
       overflow: hidden;
     }
@@ -124,7 +120,6 @@
       transition: background-color 0.2s;
     }
     .cta:hover { background: #d82f4c; }
-
     /* Window styling */
     .window {
       display: none;
@@ -164,16 +159,12 @@
       border: none;
       cursor: pointer;
     }
-    .close-btn {
-      background-color: #ff5f56;
-    }
+    .close-btn { background-color: #ff5f56; }
     .window-content {
       padding: 20px;
       height: calc(100% - 40px);
       overflow-y: auto;
     }
-
-    /* Form and table styling */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -213,931 +204,457 @@
       letter-spacing: 0.5px;
     }
   </style>
-
-  <!-- NMI Collect.js script for tokenisation -->
-  <script src="https://secure.nmi.com/token/Collect.js"
-          data-tokenization-key="5X75fz-9f3w36-35UBSm-D878dd"
-          data-variant="inline"></script>
 </head>
 <body>
   <header>
     <div class="brand">
-      <img src="CRMlogo.png" alt="Haus Manager Logo" class="logo" />
       <div class="title">Haus Manager</div>
     </div>
-    <!-- Placeholder for future actions like theme selection -->
     <div></div>
   </header>
   <main id="desktop">
     <div class="dock">
-      <section class="app-icon">
-        <h2>Recurring</h2>
-        <p>Manage recurring payment plans and schedules.</p>
-        <button class="cta" data-action="open:recurring">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Customer Vault</h2>
-        <p>Securely store and manage customer payment information.</p>
-        <button class="cta" data-action="open:vault">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Invoices</h2>
-        <p>Create, send, and track customer invoices.</p>
-        <button class="cta" data-action="open:invoices">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Marketplace Apps</h2>
-        <p>Browse and integrate third‑party applications.</p>
-        <button class="cta" data-action="open:marketplace">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Collect Checkout</h2>
-        <p>Configure and manage your hosted checkout pages.</p>
-        <button class="cta" data-action="open:checkout">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Product Manager</h2>
-        <p>Create and manage your product catalog.</p>
-        <button class="cta" data-action="open:products">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Other Services</h2>
-        <p>Access additional services and features.</p>
-        <button class="cta" data-action="open:services">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Transaction Reports</h2>
-        <p>View detailed reports on your transactions.</p>
-        <button class="cta" data-action="open:reports">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Options</h2>
-        <p>Configure your account and application settings.</p>
-        <button class="cta" data-action="open:options">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Help</h2>
-        <p>Access documentation and support resources.</p>
-        <button class="cta" data-action="open:help">Open</button>
-      </section>
-
-      <!-- Newly added partner-level modules -->
-      <section class="app-icon">
-        <h2>Merchants</h2>
-        <p>Onboard and manage merchants.</p>
-        <button class="cta" data-action="open:merchants">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Users</h2>
-        <p>Manage portal users for merchants.</p>
-        <button class="cta" data-action="open:users">Open</button>
-      </section>
-      <section class="app-icon">
-        <h2>Billing &amp; Commission</h2>
-        <p>View merchant billing and commissions.</p>
-        <button class="cta" data-action="open:billing">Open</button>
-      </section>
+      <!-- Payment and reporting modules -->
+      <section class="app-icon"><h2>Checkout</h2><p>Process one‑time payments.</p><button class="cta" data-action="open:checkout">Open</button></section>
+      <section class="app-icon"><h2>Reports</h2><p>View recent transactions.</p><button class="cta" data-action="open:reports">Open</button></section>
+      <section class="app-icon"><h2>Recurring</h2><p>Manage subscriptions.</p><button class="cta" data-action="open:recurring">Open</button></section>
+      <section class="app-icon"><h2>Customer Vault</h2><p>Manage stored customer cards.</p><button class="cta" data-action="open:vault">Open</button></section>
+      <section class="app-icon"><h2>Invoices</h2><p>Create and send invoices.</p><button class="cta" data-action="open:invoices">Open</button></section>
+      <!-- Partner modules -->
+      <section class="app-icon"><h2>Merchants</h2><p>Onboard and manage merchants.</p><button class="cta" data-action="open:merchants">Open</button></section>
+      <section class="app-icon"><h2>Users</h2><p>Manage merchant users.</p><button class="cta" data-action="open:users">Open</button></section>
+      <section class="app-icon"><h2>Billing &amp; Commission</h2><p>View billing & commission reports.</p><button class="cta" data-action="open:billing">Open</button></section>
     </div>
-
-    <!-- Window: Collect Checkout -->
+    <!-- Checkout Window -->
     <div id="window-checkout" class="window">
-      <div class="window-header">
-        <span class="window-title">Collect Checkout</span>
-        <div class="window-controls">
-          <button class="window-btn close-btn" data-action="close:checkout"></button>
-        </div>
-      </div>
+      <div class="window-header"><span class="window-title">Checkout</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:checkout"></button></div></div>
       <div class="window-content">
         <form id="checkout-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="card-name">Cardholder Name</label>
-            <input type="text" id="card-name" class="form-input" placeholder="John Doe" />
-          </div>
-          <div class="form-group">
-            <label>Card Number</label>
-            <div id="card-number" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>Expiration Date</label>
-            <div id="exp-date" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>CVV</label>
-            <div id="cvv" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label for="amount">Amount</label>
-            <input type="number" id="amount" class="form-input" min="0" step="0.01" placeholder="0.00" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="pay-button" class="cta">Pay</button>
-          </div>
+          <div class="form-group"><label for="card-name">Cardholder Name</label><input type="text" id="card-name" class="form-input" placeholder="John Doe" /></div>
+          <div class="form-group"><label>Card Number</label><div id="card-number" class="form-input"></div></div>
+          <div class="form-group"><label>Expiration Date</label><div id="exp-date" class="form-input"></div></div>
+          <div class="form-group"><label>CVV</label><div id="cvv" class="form-input"></div></div>
+          <div class="form-group"><label for="amount">Amount</label><input type="number" id="amount" class="form-input" min="0" step="0.01" placeholder="0.00" /></div>
+          <div class="form-group"><button type="button" id="pay-button" class="cta">Pay</button></div>
         </form>
         <pre id="payment-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
-
-    <!-- Window: Transaction Reports -->
+    <!-- Reports Window -->
     <div id="window-reports" class="window">
-      <div class="window-header">
-        <span class="window-title">Transaction Reports</span>
-        <div class="window-controls">
-          <button class="window-btn close-btn" data-action="close:reports"></button>
-        </div>
-      </div>
+      <div class="window-header"><span class="window-title">Transaction Reports</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:reports"></button></div></div>
       <div class="window-content">
         <button id="fetch-reports" class="cta">Fetch Transactions</button>
-        <table id="transactions-table" class="content-table">
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="transactions-body"></tbody>
-        </table>
+        <table id="transactions-table" class="content-table"><thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transactions-body"></tbody></table>
         <pre id="report-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
-
-    <!-- Placeholder windows for other modules (remain basic) -->
+    <!-- Recurring Window -->
     <div id="window-recurring" class="window">
       <div class="window-header"><span class="window-title">Recurring</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:recurring"></button></div></div>
       <div class="window-content">
         <h3>Create Subscription</h3>
         <form id="recurring-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="rec-plan-payments">Plan Payments</label>
-            <input type="number" id="rec-plan-payments" class="form-input" min="1" step="1" placeholder="e.g., 12" />
-          </div>
-          <div class="form-group">
-            <label for="rec-plan-amount">Plan Amount</label>
-            <input type="number" id="rec-plan-amount" class="form-input" min="0" step="0.01" placeholder="e.g., 10.00" />
-          </div>
-          <div class="form-group">
-            <label for="rec-day-frequency">Day Frequency</label>
-            <input type="number" id="rec-day-frequency" class="form-input" min="1" step="1" placeholder="e.g., 30" />
-          </div>
-          <div class="form-group">
-            <label>Card Number</label>
-            <div id="rec-card-number" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>Expiration Date</label>
-            <div id="rec-exp-date" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>CVV</label>
-            <div id="rec-cvv" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <button type="button" id="rec-submit" class="cta">Create Subscription</button>
-          </div>
+          <div class="form-group"><label for="rec-plan-payments">Plan Payments</label><input type="number" id="rec-plan-payments" class="form-input" min="1" step="1" placeholder="e.g., 12" /></div>
+          <div class="form-group"><label for="rec-plan-amount">Plan Amount</label><input type="number" id="rec-plan-amount" class="form-input" min="0" step="0.01" placeholder="e.g., 10.00" /></div>
+          <div class="form-group"><label for="rec-day-frequency">Day Frequency</label><input type="number" id="rec-day-frequency" class="form-input" min="1" step="1" placeholder="e.g., 30" /></div>
+          <div class="form-group"><label>Card Number</label><div id="rec-card-number" class="form-input"></div></div>
+          <div class="form-group"><label>Expiration Date</label><div id="rec-exp-date" class="form-input"></div></div>
+          <div class="form-group"><label>CVV</label><div id="rec-cvv" class="form-input"></div></div>
+          <div class="form-group"><button type="button" id="rec-submit" class="cta">Create Subscription</button></div>
         </form>
         <pre id="rec-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
+    <!-- Vault Window -->
     <div id="window-vault" class="window">
       <div class="window-header"><span class="window-title">Customer Vault</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:vault"></button></div></div>
       <div class="window-content">
         <h3>Add Customer to Vault</h3>
         <form id="vault-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label>Cardholder Name</label>
-            <input type="text" id="vault-card-name" class="form-input" placeholder="John Doe" />
-          </div>
-          <div class="form-group">
-            <label>Card Number</label>
-            <div id="vault-card-number" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>Expiration Date</label>
-            <div id="vault-exp-date" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <label>CVV</label>
-            <div id="vault-cvv" class="form-input"></div>
-          </div>
-          <div class="form-group">
-            <button type="button" id="vault-submit" class="cta">Add to Vault</button>
-          </div>
+          <div class="form-group"><label>Cardholder Name</label><input type="text" id="vault-card-name" class="form-input" placeholder="John Doe" /></div>
+          <div class="form-group"><label>Card Number</label><div id="vault-card-number" class="form-input"></div></div>
+          <div class="form-group"><label>Expiration Date</label><div id="vault-exp-date" class="form-input"></div></div>
+          <div class="form-group"><label>CVV</label><div id="vault-cvv" class="form-input"></div></div>
+          <div class="form-group"><button type="button" id="vault-submit" class="cta">Add to Vault</button></div>
         </form>
         <pre id="vault-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
         <h3>Charge Customer from Vault</h3>
         <form id="vault-charge-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="vault-id">Customer Vault ID</label>
-            <input type="text" id="vault-id" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="vault-charge-amount">Amount</label>
-            <input type="number" id="vault-charge-amount" class="form-input" min="0" step="0.01" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="vault-charge-submit" class="cta">Charge</button>
-          </div>
+          <div class="form-group"><label for="vault-id">Customer Vault ID</label><input type="text" id="vault-id" class="form-input" /></div>
+          <div class="form-group"><label for="vault-charge-amount">Amount</label><input type="number" id="vault-charge-amount" class="form-input" min="0" step="0.01" /></div>
+          <div class="form-group"><button type="button" id="vault-charge-submit" class="cta">Charge</button></div>
         </form>
         <pre id="vault-charge-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
+    <!-- Invoices Window -->
     <div id="window-invoices" class="window">
       <div class="window-header"><span class="window-title">Invoices</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:invoices"></button></div></div>
       <div class="window-content">
         <h3>Create Invoice</h3>
         <form id="invoice-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="invoice-email">Customer Email</label>
-            <input type="email" id="invoice-email" class="form-input" placeholder="customer@example.com" />
-          </div>
-          <div class="form-group">
-            <label for="invoice-amount">Amount</label>
-            <input type="number" id="invoice-amount" class="form-input" min="0" step="0.01" placeholder="100.00" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="invoice-create" class="cta">Create Invoice</button>
-          </div>
+          <div class="form-group"><label for="invoice-email">Customer Email</label><input type="email" id="invoice-email" class="form-input" placeholder="customer@example.com" /></div>
+          <div class="form-group"><label for="invoice-amount">Amount</label><input type="number" id="invoice-amount" class="form-input" min="0" step="0.01" placeholder="100.00" /></div>
+          <div class="form-group"><button type="button" id="invoice-create" class="cta">Create Invoice</button></div>
         </form>
         <pre id="invoice-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
-    <div id="window-marketplace" class="window">
-      <div class="window-header"><span class="window-title">Marketplace Apps</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:marketplace"></button></div></div>
-      <div class="window-content">
-        <h3>Marketplace Apps</h3>
-        <p>No marketplace apps integrated yet. Please check our documentation or contact support to integrate additional services.</p>
-      </div>
-    </div>
-    <div id="window-products" class="window">
-      <div class="window-header"><span class="window-title">Product Manager</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:products"></button></div></div>
-      <div class="window-content">
-        <h3>Product Manager</h3>
-        <form id="product-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="product-sku">SKU</label>
-            <input type="text" id="product-sku" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="product-desc">Description</label>
-            <input type="text" id="product-desc" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="product-price">Price</label>
-            <input type="number" id="product-price" class="form-input" min="0" step="0.01" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="product-add" class="cta">Add Product</button>
-          </div>
-        </form>
-        <table id="product-table" class="content-table">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Description</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody id="product-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <div id="window-services" class="window">
-      <div class="window-header"><span class="window-title">Other Services</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:services"></button></div></div>
-      <div class="window-content">
-        <h3>Other Services</h3>
-        <p>This section can be used to describe additional services offered by MerchantHaus. Add relevant information here.</p>
-      </div>
-    </div>
-    <div id="window-options" class="window">
-      <div class="window-header"><span class="window-title">Options</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:options"></button></div></div>
-      <div class="window-content">
-        <h3>Options</h3>
-        <p>You can extend this area to change application settings such as themes, sound or account preferences.</p>
-      </div>
-    </div>
-    <div id="window-help" class="window">
-      <div class="window-header"><span class="window-title">Help</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:help"></button></div></div>
-      <div class="window-content">
-        <h3>Help &amp; Support</h3>
-        <p>Need help? Visit <a href="https://docs.nmi.com" target="_blank">NMI Documentation</a> or <a href="https://support.nmi.com" target="_blank">Support</a>. For MerchantHaus-specific assistance, contact <a href="mailto:taylor@merchanthaus.io">taylor@merchanthaus.io</a>.</p>
-      </div>
-    </div>
-
-    <!-- Window: Merchants -->
+    <!-- Merchants Window -->
     <div id="window-merchants" class="window">
-      <div class="window-header">
-        <span class="window-title">Merchants</span>
-        <div class="window-controls">
-          <button class="window-btn close-btn" data-action="close:merchants"></button>
-        </div>
-      </div>
+      <div class="window-header"><span class="window-title">Merchants</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:merchants"></button></div></div>
       <div class="window-content">
         <h3>Merchant List</h3>
         <button id="merchants-fetch" class="cta">Fetch Merchant List</button>
         <pre id="merchants-list" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
         <h3>Create Merchant</h3>
         <form id="merchant-create-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="merch-business-name">Business Name</label>
-            <input type="text" id="merch-business-name" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="merch-first-name">First Name</label>
-            <input type="text" id="merch-first-name" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="merch-last-name">Last Name</label>
-            <input type="text" id="merch-last-name" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="merch-email">Email</label>
-            <input type="email" id="merch-email" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="merch-phone">Phone</label>
-            <input type="text" id="merch-phone" class="form-input" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="merchant-create" class="cta">Create Merchant</button>
-          </div>
+          <div class="form-group"><label for="merch-business-name">Business Name</label><input type="text" id="merch-business-name" class="form-input" /></div>
+          <div class="form-group"><label for="merch-first-name">First Name</label><input type="text" id="merch-first-name" class="form-input" /></div>
+          <div class="form-group"><label for="merch-last-name">Last Name</label><input type="text" id="merch-last-name" class="form-input" /></div>
+          <div class="form-group"><label for="merch-email">Email</label><input type="email" id="merch-email" class="form-input" /></div>
+          <div class="form-group"><label for="merch-phone">Phone</label><input type="text" id="merch-phone" class="form-input" /></div>
+          <div class="form-group"><button type="button" id="merchant-create" class="cta">Create Merchant</button></div>
         </form>
         <pre id="merchant-create-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
         <h3>Create Merchant API Key</h3>
         <form id="merchant-key-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="merch-key-id">Merchant ID</label>
-            <input type="text" id="merch-key-id" class="form-input" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="merchant-key-create" class="cta">Generate API Key</button>
-          </div>
+          <div class="form-group"><label for="merch-key-id">Merchant ID</label><input type="text" id="merch-key-id" class="form-input" /></div>
+          <div class="form-group"><button type="button" id="merchant-key-create" class="cta">Generate API Key</button></div>
         </form>
         <pre id="merchant-key-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
-
-    <!-- Window: Users -->
+    <!-- Users Window -->
     <div id="window-users" class="window">
-      <div class="window-header">
-        <span class="window-title">Users</span>
-        <div class="window-controls">
-          <button class="window-btn close-btn" data-action="close:users"></button>
-        </div>
-      </div>
+      <div class="window-header"><span class="window-title">Users</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:users"></button></div></div>
       <div class="window-content">
         <h3>User List</h3>
-        <button id="users-fetch" class="cta">Fetch User List</button>
+        <form id="users-list-form" class="form-grid" onsubmit="return false;">
+          <div class="form-group"><label for="list-users-merchant-id">Merchant ID</label><input type="text" id="list-users-merchant-id" class="form-input" /></div>
+          <div class="form-group"><button type="button" id="users-fetch" class="cta">Fetch User List</button></div>
+        </form>
         <pre id="users-list" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
         <h3>Create User</h3>
         <form id="user-create-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group">
-            <label for="user-merchant-id">Merchant ID</label>
-            <input type="text" id="user-merchant-id" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="user-username">Username</label>
-            <input type="text" id="user-username" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="user-email">Email</label>
-            <input type="email" id="user-email" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="user-first-name">First Name</label>
-            <input type="text" id="user-first-name" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="user-last-name">Last Name</label>
-            <input type="text" id="user-last-name" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label for="user-role">Role</label>
-            <input type="text" id="user-role" class="form-input" placeholder="e.g., admin" />
-          </div>
-          <div class="form-group">
-            <button type="button" id="user-create" class="cta">Create User</button>
-          </div>
+          <div class="form-group"><label for="user-merchant-id">Merchant ID</label><input type="text" id="user-merchant-id" class="form-input" /></div>
+          <div class="form-group"><label for="user-username">Username</label><input type="text" id="user-username" class="form-input" /></div>
+          <div class="form-group"><label for="user-email">Email</label><input type="email" id="user-email" class="form-input" /></div>
+          <div class="form-group"><label for="user-first-name">First Name</label><input type="text" id="user-first-name" class="form-input" /></div>
+          <div class="form-group"><label for="user-last-name">Last Name</label><input type="text" id="user-last-name" class="form-input" /></div>
+          <div class="form-group"><label for="user-role">Role</label><input type="text" id="user-role" class="form-input" placeholder="e.g., admin" /></div>
+          <div class="form-group"><button type="button" id="user-create" class="cta">Create User</button></div>
         </form>
         <pre id="user-create-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
       </div>
     </div>
-
-    <!-- Window: Billing & Commission -->
+    <!-- Billing Window -->
     <div id="window-billing" class="window">
-      <div class="window-header">
-        <span class="window-title">Billing &amp; Commission</span>
-        <div class="window-controls">
-          <button class="window-btn close-btn" data-action="close:billing"></button>
-        </div>
-      </div>
+      <div class="window-header"><span class="window-title">Billing &amp; Commission</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:billing"></button></div></div>
       <div class="window-content">
         <h3>Merchant Billing</h3>
-        <button id="billing-fetch" class="cta">Fetch Billing</button>
+        <form id="billing-form" class="form-grid" onsubmit="return false;">
+          <div class="form-group"><label for="billing-merchant-id">Merchant ID</label><input type="text" id="billing-merchant-id" class="form-input" /></div>
+          <div class="form-group"><button type="button" id="billing-fetch" class="cta">Fetch Billing</button></div>
+        </form>
         <pre id="billing-response" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
         <h3>Commission</h3>
-        <button id="commission-fetch" class="cta">Fetch Commission</button>
+        <form id="commission-form" class="form-grid" onsubmit="return false;">
+          <div class="form-group"><label for="commission-merchant-id">Merchant ID</label><input type="text" id="commission-merchant-id" class="form-input" /></div>
+          <div class="form-group"><button type="button" id="commission-fetch" class="cta">Fetch Commission</button></div>
+        </form>
         <pre id="commission-response" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
       </div>
     </div>
   </main>
-
   <script>
-    // Simple window management: open and close windows by matching IDs
-    document.addEventListener('click', function(evt) {
+    // Utility to manage windows
+    document.addEventListener('click', (evt) => {
       const target = evt.target.closest('[data-action]');
       if (!target) return;
-      const parts = target.getAttribute('data-action').split(':');
-      const action = parts[0];
-      const id = parts[1];
+      const [action, id] = target.getAttribute('data-action').split(':');
       if (action === 'open') {
         const win = document.getElementById('window-' + id);
         if (win) {
           win.style.display = 'block';
-          // bring to front by using current timestamp as zIndex
-          win.style.zIndex = String(Date.now());
-          // When opening certain windows, reconfigure CollectJS to mount fields on the appropriate selectors.
-          if (typeof CollectJS !== 'undefined') {
-            if (id === 'recurring') {
-              CollectJS.configure({
-                variant: 'inline',
-                fields: {
-                  cardNumber: { selector: '#rec-card-number' },
-                  expirationDate: { selector: '#rec-exp-date' },
-                  cvv: { selector: '#rec-cvv' }
-                }
-              });
-            } else if (id === 'vault') {
-              CollectJS.configure({
-                variant: 'inline',
-                fields: {
-                  cardNumber: { selector: '#vault-card-number' },
-                  expirationDate: { selector: '#vault-exp-date' },
-                  cvv: { selector: '#vault-cvv' }
-                }
-              });
-            } else if (id === 'checkout') {
-              CollectJS.configure({
-                variant: 'inline',
-                fields: {
-                  cardNumber: { selector: '#card-number' },
-                  expirationDate: { selector: '#exp-date' },
-                  cvv: { selector: '#cvv' }
-                }
-              });
-            }
-          }
+          win.style.zIndex = Date.now().toString();
         }
       } else if (action === 'close') {
         const win = document.getElementById('window-' + id);
         if (win) win.style.display = 'none';
       }
     });
-
-    // Setup CollectJS and payment handler after DOM ready
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof CollectJS !== 'undefined') {
+    // Fetch tokenization key and load CollectJS
+    async function loadCollect() {
+      try {
+        const res = await fetch('/.netlify/functions/getTokenizationKey');
+        const data = await res.json();
+        const tokenKey = data.token || data.key || data.tokenization_key;
+        const script = document.createElement('script');
+        script.src = 'https://secure.nmi.com/token/Collect.js';
+        script.setAttribute('data-tokenization-key', tokenKey);
+        script.setAttribute('data-variant', 'inline');
+        document.head.appendChild(script);
+        script.onload = () => {
+          console.log('CollectJS loaded');
+        };
+      } catch (err) {
+        console.error('Failed to load CollectJS:', err);
+      }
+    }
+    loadCollect();
+    // Payment handler
+    function handlePayment() {
+      const amount = document.getElementById('amount').value || '0.00';
+      if (typeof CollectJS === 'undefined') {
+        document.getElementById('payment-response').textContent = 'Tokenization library not loaded';
+        return;
+      }
+      CollectJS.tokenize({}, async function(resp) {
+        const token = resp.token || resp.payment_token;
+        try {
+          const res = await fetch('/.netlify/functions/processPayment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: amount, payment_token: token })
+          });
+          const text = await res.text();
+          document.getElementById('payment-response').textContent = text;
+        } catch (err) {
+          document.getElementById('payment-response').textContent = 'Error: ' + err;
+        }
+      }, function(error) {
+        document.getElementById('payment-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
+      });
+    }
+    // Listeners for actions once DOM content loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Payment button
+      const payBtn = document.getElementById('pay-button');
+      if (payBtn) payBtn.addEventListener('click', handlePayment);
+      // Fetch transactions
+      const reportBtn = document.getElementById('fetch-reports');
+      if (reportBtn) reportBtn.addEventListener('click', async () => {
+        const tbody = document.getElementById('transactions-body');
+        tbody.innerHTML = '';
+        document.getElementById('report-response').textContent = 'Loading...';
+        try {
+          const res = await fetch('/.netlify/functions/listTransactions');
+          const text = await res.text();
+          // parse query string lines
+          const lines = text.trim().split(/\r?\n/);
+          lines.forEach(line => {
+            if (!line) return;
+            const params = new URLSearchParams(line);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${params.get('transaction_id') || ''}</td><td>${params.get('transaction_type') || ''}</td><td>${params.get('amount') || ''}</td><td>${params.get('response_text') || ''}</td>`;
+            tbody.appendChild(tr);
+          });
+          if (!lines.length) document.getElementById('report-response').textContent = 'No transactions found.'; else document.getElementById('report-response').textContent = '';
+        } catch (err) {
+          document.getElementById('report-response').textContent = 'Error: ' + err;
+        }
+      });
+      // Recurring subscription
+      const recBtn = document.getElementById('rec-submit');
+      if (recBtn) recBtn.addEventListener('click', () => {
+        if (typeof CollectJS === 'undefined') {
+          document.getElementById('rec-response').textContent = 'Tokenization library not loaded';
+          return;
+        }
         CollectJS.configure({
           variant: 'inline',
-          fields: {
-            cardNumber: { selector: '#card-number' },
-            expirationDate: { selector: '#exp-date' },
-            cvv: { selector: '#cvv' }
+          fields: { cardNumber: { selector: '#rec-card-number' }, expirationDate: { selector: '#rec-exp-date' }, cvv: { selector: '#rec-cvv' } }
+        });
+        CollectJS.tokenize({}, async function(resp) {
+          const token = resp.token || resp.payment_token;
+          const payload = {
+            plan_payments: document.getElementById('rec-plan-payments').value,
+            plan_amount: document.getElementById('rec-plan-amount').value,
+            day_frequency: document.getElementById('rec-day-frequency').value,
+            payment_token: token
+          };
+          try {
+            const res = await fetch('/.netlify/functions/createSubscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const text = await res.text();
+            document.getElementById('rec-response').textContent = text;
+          } catch (err) {
+            document.getElementById('rec-response').textContent = 'Error: ' + err;
           }
+        }, function(error) {
+          document.getElementById('rec-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
         });
-      }
-      const payBtn = document.getElementById('pay-button');
-      if (payBtn) {
-        payBtn.addEventListener('click', function() {
-          const amount = document.getElementById('amount').value || '0.00';
-          // Tokenise card data; callback returns token on success
-          CollectJS.tokenize({}, function(resp) {
-            const token = resp.token || resp.payment_token;
-            const params = new URLSearchParams();
-            params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-            params.append('payment_token', token);
-            params.append('amount', amount);
-            params.append('type', 'sale');
-            fetch('https://secure.nmi.com/api/transact.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: params.toString()
-            })
-            .then(response => response.text())
-            .then(text => {
-              document.getElementById('payment-response').textContent = text;
-            })
-            .catch(err => {
-              document.getElementById('payment-response').textContent = 'Error: ' + err;
-            });
-          }, function(error) {
-            // Tokenisation error
-            document.getElementById('payment-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
-          });
+      });
+      // Vault add customer
+      const vaultAddBtn = document.getElementById('vault-submit');
+      if (vaultAddBtn) vaultAddBtn.addEventListener('click', () => {
+        if (typeof CollectJS === 'undefined') {
+          document.getElementById('vault-response').textContent = 'Tokenization library not loaded';
+          return;
+        }
+        CollectJS.configure({
+          variant: 'inline',
+          fields: { cardNumber: { selector: '#vault-card-number' }, expirationDate: { selector: '#vault-exp-date' }, cvv: { selector: '#vault-cvv' } }
         });
-      }
-      // Reports button
-      const reportBtn = document.getElementById('fetch-reports');
-      if (reportBtn) {
-        reportBtn.addEventListener('click', function() {
-          const params = new URLSearchParams();
-          params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-          params.append('report_type', 'transaction');
-          fetch('https://secure.nmi.com/api/query.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-          })
-          .then(res => res.text())
-          .then(text => {
-            const tbody = document.getElementById('transactions-body');
-            tbody.innerHTML = '';
-            const lines = text.trim().split(/\r?\n/);
-            lines.forEach(line => {
-              if (!line) return;
-              const data = new URLSearchParams(line);
-              const tr = document.createElement('tr');
-              tr.innerHTML = `<td>${data.get('transaction_id') || ''}</td>` +
-                            `<td>${data.get('transaction_type') || ''}</td>` +
-                            `<td>${data.get('amount') || ''}</td>` +
-                            `<td>${data.get('response_text') || ''}</td>`;
-              tbody.appendChild(tr);
-            });
-            if (!lines.length) {
-              document.getElementById('report-response').textContent = 'No transactions found.';
-            } else {
-              document.getElementById('report-response').textContent = '';
-            }
-          })
-          .catch(err => {
-            document.getElementById('report-response').textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Recurring subscription creation
-      const recSubmit = document.getElementById('rec-submit');
-      if (recSubmit) {
-        recSubmit.addEventListener('click', function() {
-          const planPayments = document.getElementById('rec-plan-payments').value;
-          const planAmount = document.getElementById('rec-plan-amount').value;
-          const dayFrequency = document.getElementById('rec-day-frequency').value;
-          if (typeof CollectJS !== 'undefined') {
-            // ensure fields are mounted on recurring form
-            CollectJS.configure({
-              variant: 'inline',
-              fields: {
-                cardNumber: { selector: '#rec-card-number' },
-                expirationDate: { selector: '#rec-exp-date' },
-                cvv: { selector: '#rec-cvv' }
-              }
-            });
-            CollectJS.tokenize({}, function(resp) {
-              const token = resp.token || resp.payment_token;
-              const params = new URLSearchParams();
-              params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-              params.append('recurring', 'add_subscription');
-              if (planPayments) params.append('plan_payments', planPayments);
-              if (planAmount) params.append('plan_amount', planAmount);
-              if (dayFrequency) params.append('day_frequency', dayFrequency);
-              params.append('payment_token', token);
-              fetch('https://secure.nmi.com/api/transact.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
-              })
-              .then(res => res.text())
-              .then(text => {
-                document.getElementById('rec-response').textContent = text;
-              })
-              .catch(err => {
-                document.getElementById('rec-response').textContent = 'Error: ' + err;
-              });
-            }, function(error) {
-              document.getElementById('rec-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
-            });
+        CollectJS.tokenize({}, async function(resp) {
+          const token = resp.token || resp.payment_token;
+          const payload = {
+            first_name: document.getElementById('vault-card-name').value,
+            payment_token: token
+          };
+          try {
+            const res = await fetch('/.netlify/functions/addCustomerToVault', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const text = await res.text();
+            document.getElementById('vault-response').textContent = text;
+          } catch (err) {
+            document.getElementById('vault-response').textContent = 'Error: ' + err;
           }
+        }, function(error) {
+          document.getElementById('vault-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
         });
-      }
-
-      // Vault: Add customer
-      const vaultSubmit = document.getElementById('vault-submit');
-      if (vaultSubmit) {
-        vaultSubmit.addEventListener('click', function() {
-          if (typeof CollectJS !== 'undefined') {
-            CollectJS.configure({
-              variant: 'inline',
-              fields: {
-                cardNumber: { selector: '#vault-card-number' },
-                expirationDate: { selector: '#vault-exp-date' },
-                cvv: { selector: '#vault-cvv' }
-              }
-            });
-            CollectJS.tokenize({}, function(resp) {
-              const token = resp.token || resp.payment_token;
-              const params = new URLSearchParams();
-              params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-              params.append('customer_vault', 'add_customer');
-              params.append('payment_token', token);
-              // Optionally pass the cardholder name for reference
-              const name = document.getElementById('vault-card-name').value;
-              if (name) params.append('first_name', name);
-              fetch('https://secure.nmi.com/api/transact.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
-              })
-              .then(res => res.text())
-              .then(text => {
-                document.getElementById('vault-response').textContent = text;
-              })
-              .catch(err => {
-                document.getElementById('vault-response').textContent = 'Error: ' + err;
-              });
-            }, function(error) {
-              document.getElementById('vault-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
-            });
-          }
-        });
-      }
-
-      // Vault: Charge customer from vault
-      const vaultCharge = document.getElementById('vault-charge-submit');
-      if (vaultCharge) {
-        vaultCharge.addEventListener('click', function() {
-          const vaultId = document.getElementById('vault-id').value;
-          const amount = document.getElementById('vault-charge-amount').value;
-          const params = new URLSearchParams();
-          params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-          params.append('customer_vault_id', vaultId);
-          params.append('type', 'sale');
-          if (amount) params.append('amount', amount);
-          fetch('https://secure.nmi.com/api/transact.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-          })
-          .then(res => res.text())
-          .then(text => {
-            document.getElementById('vault-charge-response').textContent = text;
-          })
-          .catch(err => {
-            document.getElementById('vault-charge-response').textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Invoices: Create invoice
+      });
+      // Vault charge customer
+      const vaultChargeBtn = document.getElementById('vault-charge-submit');
+      if (vaultChargeBtn) vaultChargeBtn.addEventListener('click', async () => {
+        const payload = {
+          customer_vault_id: document.getElementById('vault-id').value,
+          amount: document.getElementById('vault-charge-amount').value
+        };
+        try {
+          const res = await fetch('/.netlify/functions/chargeCustomerVault', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const text = await res.text();
+          document.getElementById('vault-charge-response').textContent = text;
+        } catch (err) {
+          document.getElementById('vault-charge-response').textContent = 'Error: ' + err;
+        }
+      });
+      // Invoice
       const invoiceBtn = document.getElementById('invoice-create');
-      if (invoiceBtn) {
-        invoiceBtn.addEventListener('click', function() {
-          const email = document.getElementById('invoice-email').value;
-          const amount = document.getElementById('invoice-amount').value;
-          const params = new URLSearchParams();
-          params.append('security_key', 'hGE67vv4PSe7mg24Ck2554F4PDX2dZ5D');
-          params.append('invoicing', 'add_invoice');
-          if (email) params.append('email', email);
-          if (amount) params.append('amount', amount);
-          fetch('https://secure.nmi.com/api/transact.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-          })
-          .then(res => res.text())
-          .then(text => {
-            document.getElementById('invoice-response').textContent = text;
-          })
-          .catch(err => {
-            document.getElementById('invoice-response').textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Product Manager: Add product to local list
-      const productAdd = document.getElementById('product-add');
-      if (productAdd) {
-        productAdd.addEventListener('click', function() {
-          const sku = document.getElementById('product-sku').value.trim();
-          const desc = document.getElementById('product-desc').value.trim();
-          const price = document.getElementById('product-price').value;
-          if (!sku && !desc && !price) return;
-          const tbody = document.getElementById('product-body');
-          const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${sku}</td><td>${desc}</td><td>${price}</td>`;
-          tbody.appendChild(tr);
-          // reset fields
-          document.getElementById('product-sku').value = '';
-          document.getElementById('product-desc').value = '';
-          document.getElementById('product-price').value = '';
-        });
-      }
-
-      // Partner API key constant for v4 endpoints
-      const PARTNER_KEY = 'v4_secret_Kbxe2HevAygd9v46Qx88839yVMRmH7EE';
-
-      // Merchants: Fetch merchant list
-      const merchantsFetch = document.getElementById('merchants-fetch');
-      if (merchantsFetch) {
-        merchantsFetch.addEventListener('click', function() {
-          const listPre = document.getElementById('merchants-list');
-          listPre.textContent = 'Loading...';
-          fetch('https://secure.nmi.com/api/v4/merchants/reports', {
-            method: 'GET',
-            headers: { 'Authorization': PARTNER_KEY }
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              listPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              listPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            listPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Merchants: Create merchant
-      const merchantCreate = document.getElementById('merchant-create');
-      if (merchantCreate) {
-        merchantCreate.addEventListener('click', function() {
-          const businessName = document.getElementById('merch-business-name').value;
-          const firstName = document.getElementById('merch-first-name').value;
-          const lastName = document.getElementById('merch-last-name').value;
-          const email = document.getElementById('merch-email').value;
-          const phone = document.getElementById('merch-phone').value;
-          const payload = {
-            business_name: businessName,
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone: phone
-          };
-          const respPre = document.getElementById('merchant-create-response');
-          respPre.textContent = 'Submitting...';
-          fetch('https://secure.nmi.com/api/v4/merchants', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': PARTNER_KEY },
-            body: JSON.stringify(payload)
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              respPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              respPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            respPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Merchants: Create API key
-      const merchantKeyBtn = document.getElementById('merchant-key-create');
-      if (merchantKeyBtn) {
-        merchantKeyBtn.addEventListener('click', function() {
-          const merchId = document.getElementById('merch-key-id').value;
-          const keyPre = document.getElementById('merchant-key-response');
-          keyPre.textContent = 'Submitting...';
-          fetch('https://secure.nmi.com/api/v4/merchants/' + encodeURIComponent(merchId) + '/api_keys', {
-            method: 'POST',
-            headers: { 'Authorization': PARTNER_KEY }
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              keyPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              keyPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            keyPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Users: Fetch user list
-      const usersFetch = document.getElementById('users-fetch');
-      if (usersFetch) {
-        usersFetch.addEventListener('click', function() {
-          const usersPre = document.getElementById('users-list');
-          usersPre.textContent = 'Loading...';
-          fetch('https://secure.nmi.com/api/v4/users/reports', {
-            method: 'GET',
-            headers: { 'Authorization': PARTNER_KEY }
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              usersPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              usersPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            usersPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Users: Create user
+      if (invoiceBtn) invoiceBtn.addEventListener('click', async () => {
+        const payload = {
+          email: document.getElementById('invoice-email').value,
+          amount: document.getElementById('invoice-amount').value
+        };
+        try {
+          const res = await fetch('/.netlify/functions/createInvoice', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const text = await res.text();
+          document.getElementById('invoice-response').textContent = text;
+        } catch (err) {
+          document.getElementById('invoice-response').textContent = 'Error: ' + err;
+        }
+      });
+      // Merchants: fetch list
+      const merchFetchBtn = document.getElementById('merchants-fetch');
+      if (merchFetchBtn) merchFetchBtn.addEventListener('click', async () => {
+        const pre = document.getElementById('merchants-list');
+        pre.textContent = 'Loading...';
+        try {
+          const res = await fetch('/.netlify/functions/listMerchants');
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Merchants: create
+      const merchCreateBtn = document.getElementById('merchant-create');
+      if (merchCreateBtn) merchCreateBtn.addEventListener('click', async () => {
+        const payload = {
+          company: document.getElementById('merch-business-name').value,
+          owner_first_name: document.getElementById('merch-first-name').value,
+          owner_last_name: document.getElementById('merch-last-name').value,
+          email: document.getElementById('merch-email').value,
+          phone: document.getElementById('merch-phone').value
+        };
+        const pre = document.getElementById('merchant-create-response');
+        pre.textContent = 'Submitting...';
+        try {
+          const res = await fetch('/.netlify/functions/createMerchant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Merchants: generate key
+      const merchKeyBtn = document.getElementById('merchant-key-create');
+      if (merchKeyBtn) merchKeyBtn.addEventListener('click', async () => {
+        const id = document.getElementById('merch-key-id').value;
+        const pre = document.getElementById('merchant-key-response');
+        pre.textContent = 'Submitting...';
+        try {
+          const res = await fetch('/.netlify/functions/generateMerchantKey?merchant_id=' + encodeURIComponent(id));
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Users: fetch list
+      const usersFetchBtn = document.getElementById('users-fetch');
+      if (usersFetchBtn) usersFetchBtn.addEventListener('click', async () => {
+        const merchantId = document.getElementById('list-users-merchant-id').value;
+        const pre = document.getElementById('users-list');
+        pre.textContent = 'Loading...';
+        try {
+          const res = await fetch('/.netlify/functions/listUsers?merchant_id=' + encodeURIComponent(merchantId));
+          const json = await res.json();
+          pre.textContent = JSON.stringify(json, null, 2);
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Users: create
       const userCreateBtn = document.getElementById('user-create');
-      if (userCreateBtn) {
-        userCreateBtn.addEventListener('click', function() {
-          const merchantId = document.getElementById('user-merchant-id').value;
-          const username = document.getElementById('user-username').value;
-          const email = document.getElementById('user-email').value;
-          const firstNameU = document.getElementById('user-first-name').value;
-          const lastNameU = document.getElementById('user-last-name').value;
-          const role = document.getElementById('user-role').value;
-          const payload = {
-            merchant_id: merchantId,
-            username: username,
-            email: email,
-            first_name: firstNameU,
-            last_name: lastNameU,
-            role: role
-          };
-          const userResp = document.getElementById('user-create-response');
-          userResp.textContent = 'Submitting...';
-          fetch('https://secure.nmi.com/api/v4/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': PARTNER_KEY },
-            body: JSON.stringify(payload)
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              userResp.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              userResp.textContent = text;
-            }
-          })
-          .catch(err => {
-            userResp.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Billing: Fetch billing
-      const billingFetchBtn = document.getElementById('billing-fetch');
-      if (billingFetchBtn) {
-        billingFetchBtn.addEventListener('click', function() {
-          const billingPre = document.getElementById('billing-response');
-          billingPre.textContent = 'Loading...';
-          fetch('https://secure.nmi.com/api/v4/billing/reports', {
-            method: 'GET',
-            headers: { 'Authorization': PARTNER_KEY }
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              billingPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              billingPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            billingPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
-
-      // Billing: Fetch commission
-      const commissionFetchBtn = document.getElementById('commission-fetch');
-      if (commissionFetchBtn) {
-        commissionFetchBtn.addEventListener('click', function() {
-          const commissionPre = document.getElementById('commission-response');
-          commissionPre.textContent = 'Loading...';
-          fetch('https://secure.nmi.com/api/v4/billing/commission/reports', {
-            method: 'GET',
-            headers: { 'Authorization': PARTNER_KEY }
-          })
-          .then(res => res.text())
-          .then(text => {
-            try {
-              const data = JSON.parse(text);
-              commissionPre.textContent = JSON.stringify(data, null, 2);
-            } catch (e) {
-              commissionPre.textContent = text;
-            }
-          })
-          .catch(err => {
-            commissionPre.textContent = 'Error: ' + err;
-          });
-        });
-      }
+      if (userCreateBtn) userCreateBtn.addEventListener('click', async () => {
+        const payload = {
+          merchant_id: document.getElementById('user-merchant-id').value,
+          username: document.getElementById('user-username').value,
+          email: document.getElementById('user-email').value,
+          first_name: document.getElementById('user-first-name').value,
+          last_name: document.getElementById('user-last-name').value,
+          role: document.getElementById('user-role').value,
+          status: 'active'
+        };
+        const pre = document.getElementById('user-create-response');
+        pre.textContent = 'Submitting...';
+        try {
+          const res = await fetch('/.netlify/functions/createUser', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Billing fetch
+      const billingBtn = document.getElementById('billing-fetch');
+      if (billingBtn) billingBtn.addEventListener('click', async () => {
+        const merchantId = document.getElementById('billing-merchant-id').value;
+        const pre = document.getElementById('billing-response');
+        pre.textContent = 'Loading...';
+        try {
+          const res = await fetch('/.netlify/functions/listBilling?merchant_id=' + encodeURIComponent(merchantId));
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
+      // Commission fetch
+      const commissionBtn = document.getElementById('commission-fetch');
+      if (commissionBtn) commissionBtn.addEventListener('click', async () => {
+        const merchantId = document.getElementById('commission-merchant-id').value;
+        const pre = document.getElementById('commission-response');
+        pre.textContent = 'Loading...';
+        try {
+          const res = await fetch('/.netlify/functions/listCommission?merchant_id=' + encodeURIComponent(merchantId));
+          const text = await res.text();
+          pre.textContent = text;
+        } catch (err) {
+          pre.textContent = 'Error: ' + err;
+        }
+      });
     });
   </script>
 </body>

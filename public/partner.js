@@ -17,6 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Theme toggler: apply saved preference and allow switching between
+  // dark and light modes.  The CSS uses CSS variables for colours.
+  const themeToggleButton = document.getElementById('theme-toggle');
+  // Apply saved theme on page load
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+  }
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      const current = document.body.classList.contains('light') ? 'light' : 'dark';
+      localStorage.setItem('theme', current);
+    });
+  }
+
   // Navigation handling
   const navButtons = document.querySelectorAll('nav button[data-section]');
   navButtons.forEach(button => {
@@ -52,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* MERCHANT SECTION */
   const refreshMerchantsBtn = document.getElementById('refresh-merchants');
   const merchantsTableBody = document.querySelector('#merchants-table tbody');
+  const merchantSearchInput = document.getElementById('merchant-search');
   refreshMerchantsBtn.addEventListener('click', async () => {
     merchantsTableBody.innerHTML = '';
     try {
@@ -76,6 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Filter merchants client‑side by searching table rows
+  if (merchantSearchInput) {
+    merchantSearchInput.addEventListener('input', () => {
+      const term = merchantSearchInput.value.trim().toLowerCase();
+      Array.from(merchantsTableBody.children).forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  }
+
   // Create merchant
   const createMerchantForm = document.getElementById('create-merchant-form');
   createMerchantForm.addEventListener('submit', async (e) => {
@@ -95,9 +123,19 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error('Failed to create merchant');
-      const result = await res.json();
-      alert('Merchant created successfully: ' + JSON.stringify(result));
+      const statusEl = document.getElementById('create-merchant-status');
+      statusEl.textContent = '';
+      if (!res.ok) {
+        const errorText = await res.text();
+        statusEl.textContent = 'Error creating merchant: ' + errorText;
+        statusEl.style.color = '#f85149';
+        return;
+      }
+      // The createMerchant function returns the raw API response as text.  Display
+      // it to the user and refresh the merchant list.
+      const text = await res.text();
+      statusEl.textContent = 'Merchant created successfully: ' + text;
+      statusEl.style.color = '#2f81f7';
       refreshMerchantsBtn.click();
       createMerchantForm.reset();
     } catch (err) {
@@ -140,15 +178,35 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch(`/.netlify/functions/listUsers?merchant_id=${encodeURIComponent(merchantId)}`);
       if (!res.ok) throw new Error('Failed to list users');
-      const data = await res.json();
-      const users = data.users || [];
-      users.forEach(u => {
+      const xmlText = await res.text();
+      // NMI returns user reports as XML.  Parse into DOM and extract
+      // individual users.  Each <user> element contains child
+      // elements like <id>, <username>, <first_name>, <last_name>,
+      // <status>.
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+      const userNodes = xmlDoc.getElementsByTagName('user');
+      for (let i = 0; i < userNodes.length; i++) {
+        const u = userNodes[i];
+        const id = u.getElementsByTagName('id')[0]?.textContent || '';
+        const username = u.getElementsByTagName('username')[0]?.textContent || '';
+        const firstName = u.getElementsByTagName('first_name')[0]?.textContent || '';
+        const lastName = u.getElementsByTagName('last_name')[0]?.textContent || '';
+        const status = u.getElementsByTagName('status')[0]?.textContent || '';
         const row = document.createElement('tr');
-        row.innerHTML = `<td>${u.id}</td><td>${u.username}</td><td>${u.first_name}</td><td>${u.last_name}</td><td>${u.status}</td>`;
+        row.innerHTML = `<td>${id}</td><td>${username}</td><td>${firstName}</td><td>${lastName}</td><td>${status}</td>`;
         usersTableBody.appendChild(row);
-      });
+      }
     } catch (err) {
-      alert(err.message);
+      // Display error in the table body instead of a blocking alert
+      usersTableBody.innerHTML = '';
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.colSpan = 5;
+      cell.textContent = 'Error retrieving users: ' + err.message;
+      cell.style.color = '#f85149';
+      row.appendChild(cell);
+      usersTableBody.appendChild(row);
     }
   });
 
@@ -172,12 +230,22 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error('Failed to create user');
-      const result = await res.json();
-      alert('User created successfully: ' + JSON.stringify(result));
+      const statusEl = document.getElementById('create-user-status');
+      statusEl.textContent = '';
+      if (!res.ok) {
+        const errorText = await res.text();
+        statusEl.textContent = 'Error creating user: ' + errorText;
+        statusEl.style.color = '#f85149';
+        return;
+      }
+      const text = await res.text();
+      statusEl.textContent = 'User created successfully: ' + text;
+      statusEl.style.color = '#2f81f7';
       createUserForm.reset();
     } catch (err) {
-      alert(err.message);
+      const statusEl = document.getElementById('create-user-status');
+      statusEl.textContent = 'Error creating user: ' + err.message;
+      statusEl.style.color = '#f85149';
     }
   });
 

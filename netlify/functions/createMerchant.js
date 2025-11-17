@@ -1,14 +1,18 @@
 // Function: createMerchant
 // Creates a new merchant using the NMI v4 API.  Expects a JSON
 // payload in the request body with the following fields:
-// - business_name: string
-// - first_name: string
-// - last_name: string
-// - email: string
-// - phone: string (optional)
+// - company: string            – Full legal business name
+// - dba: string                – Doing business as name
+// - owner_first_name: string   – Merchant owner first name
+// - owner_last_name: string    – Merchant owner last name
+// - currency: string           – ISO currency code (e.g. USD, ZAR)
+// - processor_id: string       – Processor ID assigned by NMI
+// - pricing_id: string         – Pricing plan ID assigned by NMI
 // The partner‑level API key must be provided via the
-// `NMI_PARTNER_KEY` environment variable.  The NMI API will return
-// JSON describing the created merchant or an error.
+// `NMI_PARTNER_KEY` environment variable.  The payload is sent
+// directly to the NMI v4 endpoint.  On success the function
+// returns the API response body (usually JSON) along with the
+// HTTP status code.
 
 exports.handler = async function (event, context) {
   const partnerKey = process.env.NMI_PARTNER_KEY;
@@ -24,10 +28,16 @@ exports.handler = async function (event, context) {
   } catch (err) {
     return { statusCode: 400, body: 'Invalid JSON: ' + err.toString() };
   }
+  // Forward the payload directly to the NMI merchants endpoint.  NMI
+  // accepts a wide variety of fields; this function does not enforce
+  // required fields here to allow flexible merchant onboarding.
   try {
     const res = await fetch('https://secure.nmi.com/api/v4/merchants', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: partnerKey },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: partnerKey,
+      },
       body: JSON.stringify(payload),
     });
     const text = await res.text();
@@ -36,6 +46,9 @@ exports.handler = async function (event, context) {
       body: text,
     };
   } catch (err) {
-    return { statusCode: 500, body: 'Error creating merchant: ' + err.toString() };
+    return {
+      statusCode: 500,
+      body: 'Error creating merchant: ' + err.toString(),
+    };
   }
 };

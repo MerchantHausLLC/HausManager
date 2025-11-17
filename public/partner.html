@@ -9,6 +9,7 @@
 <body>
   <header>
     <h1>Partner Portal</h1>
+    <button id="theme-toggle" class="theme-toggle" title="Toggle light/dark mode">🌓</button>
   </header>
   <nav id="nav">
     <button data-section="merchants" class="active">Merchants</button>
@@ -23,6 +24,7 @@
     <h2>Merchants</h2>
     <div id="merchant-list-container">
       <button id="refresh-merchants" class="action">Refresh Merchant List</button>
+      <input type="text" id="merchant-search" placeholder="Search merchants..." style="margin-left:0.5rem; padding:0.5rem; border-radius:var(--border-radius); border:1px solid var(--colour-border); background: var(--colour-bg); color: var(--colour-text); max-width: 200px;">
       <table id="merchants-table">
         <thead>
           <tr>
@@ -58,6 +60,7 @@
       <label for="merchant-pricing-id">Pricing ID</label>
       <input type="text" id="merchant-pricing-id" required>
       <button type="submit" class="action">Create Merchant</button>
+      <p id="create-merchant-status" class="message"></p>
     </form>
     <form id="generate-merchant-key-form">
       <h3>Generate Merchant API Key</h3>
@@ -117,6 +120,7 @@
         <option value="inactive">Inactive</option>
       </select>
       <button type="submit" class="action">Create User</button>
+      <p id="create-user-status" class="message"></p>
     </form>
   </main>
   <!-- Billing section -->
