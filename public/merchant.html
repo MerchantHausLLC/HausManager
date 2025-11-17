@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="merchant-header">Merchant Portal</h1>
+  </header>
+  <nav id="nav">
+    <button data-section="payment" class="active">Payment</button>
+    <button data-section="subscription">Subscription</button>
+    <button data-section="vault">Customer Vault</button>
+    <button data-section="invoice">Invoice</button>
+    <button data-section="transactions">Transactions</button>
+    <button data-section="branding">Branding</button>
+    <button data-section="logout" class="danger">Logout</button>
+  </nav>
+  <!-- Payment Section -->
+  <main id="payment" class="active">
+    <h2>Process Payment</h2>
+    <form id="payment-form">
+      <label for="payment-amount">Amount (e.g., 10.00)</label>
+      <input type="number" id="payment-amount" step="0.01" required>
+      <label for="payment-description">Description (optional)</label>
+      <input type="text" id="payment-description">
+      <!-- Collect.js will render card fields into these containers -->
+      <div id="payment-ccnumber"></div>
+      <div id="payment-ccexp"></div>
+      <div id="payment-cvv"></div>
+      <button type="button" id="payment-submit" class="action">Pay Now</button>
+    </form>
+    <p id="payment-status" class="message"></p>
+  </main>
+  <!-- Subscription Section -->
+  <main id="subscription">
+    <h2>Create Subscription</h2>
+    <form id="subscription-form">
+      <label for="plan-amount">Plan Amount</label>
+      <input type="number" id="plan-amount" step="0.01" required>
+      <label for="plan-payments">Number of Payments (0 for unlimited)</label>
+      <input type="number" id="plan-payments" value="0">
+      <label for="day-frequency">Frequency (days)</label>
+      <input type="number" id="day-frequency" required>
+      <div id="subscription-ccnumber"></div>
+      <div id="subscription-ccexp"></div>
+      <div id="subscription-cvv"></div>
+      <button type="button" id="subscription-submit" class="action">Create Subscription</button>
+    </form>
+    <p id="subscription-status" class="message"></p>
+  </main>
+  <!-- Customer Vault Section -->
+  <main id="vault">
+    <h2>Customer Vault</h2>
+    <form id="add-customer-form">
+      <h3>Add Customer</h3>
+      <label for="vault-first-name">First Name</label>
+      <input type="text" id="vault-first-name">
+      <label for="vault-last-name">Last Name</label>
+      <input type="text" id="vault-last-name">
+      <label for="vault-email">Email</label>
+      <input type="email" id="vault-email">
+      <div id="vault-ccnumber"></div>
+      <div id="vault-ccexp"></div>
+      <div id="vault-cvv"></div>
+      <button type="button" id="add-customer-submit" class="action">Add to Vault</button>
+    </form>
+    <p id="add-customer-status" class="message"></p>
+    <form id="charge-customer-form">
+      <h3>Charge Vault Customer</h3>
+      <label for="charge-vault-id">Vault ID</label>
+      <input type="text" id="charge-vault-id" required>
+      <label for="charge-amount">Amount</label>
+      <input type="number" id="charge-amount" step="0.01" required>
+      <button type="submit" class="action">Charge</button>
+    </form>
+    <p id="charge-status" class="message"></p>
+  </main>
+  <!-- Invoice Section -->
+  <main id="invoice">
+    <h2>Create Invoice</h2>
+    <form id="invoice-form">
+      <label for="invoice-email">Customer Email</label>
+      <input type="email" id="invoice-email" required>
+      <label for="invoice-amount">Amount</label>
+      <input type="number" id="invoice-amount" step="0.01" required>
+      <label for="invoice-description">Description (optional)</label>
+      <input type="text" id="invoice-description">
+      <button type="submit" class="action">Create Invoice</button>
+    </form>
+    <p id="invoice-status" class="message"></p>
+  </main>
+  <!-- Transactions Section -->
+  <main id="transactions">
+    <h2>Transaction Reports</h2>
+    <form id="transactions-form">
+      <label for="transactions-start">Start Date</label>
+      <input type="date" id="transactions-start" required>
+      <label for="transactions-end">End Date</label>
+      <input type="date" id="transactions-end" required>
+      <button type="submit" class="action">Fetch Transactions</button>
+    </form>
+    <pre id="transactions-output" class="message"></pre>
+  </main>
+  <!-- Branding Section -->
+  <main id="branding">
+    <h2>Custom Branding</h2>
+    <p id="branding-message" class="message"></p>
+    <form id="branding-form">
+      <label for="branding-color">Primary Colour</label>
+      <input type="color" id="branding-color" value="#2f81f7">
+      <label for="branding-logo">Logo URL</label>
+      <input type="url" id="branding-logo" placeholder="https://example.com/logo.png">
+      <button type="submit" class="action">Save Branding</button>
+    </form>
+  </main>
+  <script src="merchant.js"></script>
+</body>
+</html>

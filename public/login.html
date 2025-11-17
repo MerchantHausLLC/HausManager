@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haus Portal Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Haus Portal</h1>
+  </header>
+  <div class="login-container">
+    <h2 style="text-align:center;">Login</h2>
+    <div class="login-boxes">
+      <div class="login-box" id="partner-login-box">
+        <h2>Partner Login</h2>
+        <form id="partner-login-form">
+          <label for="partner-username">Username</label>
+          <input type="text" id="partner-username" required>
+          <label for="partner-password">Password</label>
+          <input type="password" id="partner-password" required>
+          <button type="submit" class="action">Login as Partner</button>
+        </form>
+        <p class="message">Use your partner portal credentials. These are only used to identify your role; sensitive API keys remain stored securely in Netlify.</p>
+      </div>
+      <div class="login-box" id="merchant-login-box">
+        <h2>Merchant Login</h2>
+        <form id="merchant-login-form">
+          <label for="merchant-id">Merchant ID</label>
+          <input type="text" id="merchant-id" required>
+          <label for="merchant-password">Password</label>
+          <input type="password" id="merchant-password" required>
+          <button type="submit" class="action">Login as Merchant</button>
+        </form>
+        <p class="message">Enter your merchant ID and password. Once authenticated, you can manage payments, customers and invoices.</p>
+      </div>
+    </div>
+  </div>
+  <script src="login.js"></script>
+</body>
+</html>

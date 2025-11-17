@@ -1,0 +1,202 @@
+/*
+ * Global styles for the Haus Portal partner and merchant applications.
+ *
+ * The CSS defined in this file follows modern best‑practice design principles:
+ *  - A simple colour palette with clearly defined variables for easy theming.
+ *  - A responsive layout that adapts to different viewport sizes.
+ *  - Readable typography with adequate contrast for accessibility.
+ *  - Utility classes for spacing, layout and forms to minimise duplicate rules.
+ */
+
+/* Colour palette. The primary colour can be overridden via a CSS variable on the
+ * body element to support custom branding in the merchant portal. The default
+ * values provide a dark theme with high contrast on text and backgrounds. */
+:root {
+  --colour-bg: #0d1117;
+  --colour-surface: #161b22;
+  --colour-border: #30363d;
+  --colour-text: #c9d1d9;
+  --colour-muted: #8b949e;
+  --colour-primary: #2f81f7;
+  --colour-error: #f85149;
+  --border-radius: 4px;
+  --spacing: 1rem;
+  --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--colour-bg);
+  color: var(--colour-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--colour-surface);
+  border-bottom: 1px solid var(--colour-border);
+  padding: var(--spacing);
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--colour-primary);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: var(--spacing) 0;
+  flex-wrap: wrap;
+}
+
+nav button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: var(--colour-surface);
+  color: var(--colour-text);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+nav button.active,
+nav button:hover {
+  background: var(--colour-primary);
+  color: #fff;
+}
+
+main {
+  flex: 1;
+  display: none;
+  padding: var(--spacing);
+}
+
+main.active {
+  display: block;
+}
+
+/* Form styling */
+form {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing);
+  margin-bottom: var(--spacing);
+  max-width: 600px;
+}
+
+form h2 {
+  margin-top: 0;
+  color: var(--colour-primary);
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--colour-muted);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+textarea, select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--border-radius);
+  background: var(--colour-bg);
+  color: var(--colour-text);
+}
+
+input[disabled], textarea[disabled], select[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+button[type="submit"],
+button.action {
+  padding: 0.5rem 1rem;
+  background: var(--colour-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+button.danger {
+  background: var(--colour-error);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing);
+}
+
+th, td {
+  padding: 0.5rem;
+  border: 1px solid var(--colour-border);
+}
+
+th {
+  background: var(--colour-surface);
+  color: var(--colour-primary);
+  text-align: left;
+}
+
+/* Layout for login page */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing);
+  gap: var(--spacing);
+}
+
+.login-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+  max-width: 1000px;
+  width: 100%;
+  justify-content: center;
+}
+
+.login-box {
+  flex: 1 1 300px;
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing);
+}
+
+.login-box h2 {
+  margin-top: 0;
+  color: var(--colour-primary);
+}
+
+.message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--colour-muted);
+}
+
+/* Responsive design: stack navigation on small screens */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
+  nav button {
+    width: 100%;
+  }
+}

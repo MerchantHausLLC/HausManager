@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Partner Portal</h1>
+  </header>
+  <nav id="nav">
+    <button data-section="merchants" class="active">Merchants</button>
+    <button data-section="users">Users</button>
+    <button data-section="billing">Billing</button>
+    <button data-section="commission">Commission</button>
+    <button data-section="branding">Branding</button>
+    <button data-section="logout" class="danger">Logout</button>
+  </nav>
+  <!-- Merchants section -->
+  <main id="merchants" class="active">
+    <h2>Merchants</h2>
+    <div id="merchant-list-container">
+      <button id="refresh-merchants" class="action">Refresh Merchant List</button>
+      <table id="merchants-table">
+        <thead>
+          <tr>
+            <th>Merchant ID</th>
+            <th>Business Name</th>
+            <th>DBA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Merchant rows will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+    <form id="create-merchant-form">
+      <h3>Create Merchant</h3>
+      <label for="merchant-business-name">Business Name</label>
+      <input type="text" id="merchant-business-name" required>
+      <label for="merchant-dba">DBA (Doing Business As)</label>
+      <input type="text" id="merchant-dba" required>
+      <label for="merchant-owner-first">Owner First Name</label>
+      <input type="text" id="merchant-owner-first" required>
+      <label for="merchant-owner-last">Owner Last Name</label>
+      <input type="text" id="merchant-owner-last" required>
+      <label for="merchant-currency">Currency</label>
+      <select id="merchant-currency" required>
+        <option value="USD">USD</option>
+        <option value="ZAR">ZAR</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      </select>
+      <label for="merchant-processor-id">Processor ID</label>
+      <input type="text" id="merchant-processor-id" required>
+      <label for="merchant-pricing-id">Pricing ID</label>
+      <input type="text" id="merchant-pricing-id" required>
+      <button type="submit" class="action">Create Merchant</button>
+    </form>
+    <form id="generate-merchant-key-form">
+      <h3>Generate Merchant API Key</h3>
+      <label for="generate-merchant-id">Merchant ID</label>
+      <input type="text" id="generate-merchant-id" required>
+      <button type="submit" class="action">Generate Key</button>
+      <p id="merchant-key-output" class="message"></p>
+    </form>
+  </main>
+  <!-- Users section -->
+  <main id="users">
+    <h2>Users</h2>
+    <form id="list-users-form">
+      <h3>List Users</h3>
+      <label for="list-users-merchant-id">Merchant ID</label>
+      <input type="text" id="list-users-merchant-id" required>
+      <button type="submit" class="action">List Users</button>
+    </form>
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- User rows inserted here -->
+      </tbody>
+    </table>
+    <form id="create-user-form">
+      <h3>Create User</h3>
+      <label for="create-user-merchant-id">Merchant ID</label>
+      <input type="text" id="create-user-merchant-id" required>
+      <label for="create-username">Username</label>
+      <input type="text" id="create-username" required>
+      <label for="create-password">Password</label>
+      <input type="password" id="create-password" required>
+      <label for="create-first-name">First Name</label>
+      <input type="text" id="create-first-name" required>
+      <label for="create-last-name">Last Name</label>
+      <input type="text" id="create-last-name" required>
+      <label for="create-email">Email</label>
+      <input type="email" id="create-email" required>
+      <label for="create-role">Role</label>
+      <select id="create-role" required>
+        <option value="principal">Principal</option>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+        <option value="readonly">Readonly</option>
+      </select>
+      <label for="create-status">Status</label>
+      <select id="create-status" required>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      <button type="submit" class="action">Create User</button>
+    </form>
+  </main>
+  <!-- Billing section -->
+  <main id="billing">
+    <h2>Billing Reports</h2>
+    <form id="billing-form">
+      <label for="billing-merchant-id">Merchant ID</label>
+      <input type="text" id="billing-merchant-id" required>
+      <button type="submit" class="action">Get Billing Report</button>
+    </form>
+    <pre id="billing-output" class="message"></pre>
+  </main>
+  <!-- Commission section -->
+  <main id="commission">
+    <h2>Commission Reports</h2>
+    <form id="commission-form">
+      <label for="commission-merchant-id">Merchant ID</label>
+      <input type="text" id="commission-merchant-id" required>
+      <button type="submit" class="action">Get Commission Report</button>
+    </form>
+    <pre id="commission-output" class="message"></pre>
+  </main>
+  <!-- Branding section -->
+  <main id="branding">
+    <h2>Branding Settings</h2>
+    <p>Custom branding allows merchants to set their own colours and logo in the portal. You can enable or disable this feature for all merchants.</p>
+    <label>
+      <input type="checkbox" id="enable-branding-checkbox">
+      Enable merchant custom branding
+    </label>
+    <p id="branding-status" class="message"></p>
+    <button id="save-branding" class="action">Save Branding Setting</button>
+  </main>
+  <script src="partner.js"></script>
+</body>
+</html>
