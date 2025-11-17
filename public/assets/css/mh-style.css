@@ -1,0 +1,61 @@
+
+/* === CRM Sidenav (black→gray emphasis, colored icons) === */
+:root{
+  --mh-black:#0b0b0f; --mh-black-2:#0e0e12; --mh-gray-1:#0f172a; --mh-gray-2:#111827; --mh-gray-3:#1f2937; --mh-gray-4:#374151;
+  --mh-text:#e5e7eb; --mh-muted:#94a3b8; --mh-border:#1f2937;
+}
+.mh-sidenav{width:260px;background:var(--mh-black);color:var(--mh-text);border-right:1px solid var(--mh-border);padding:12px;position:sticky;top:0;height:100vh}
+.mh-sidenav .mh-sidenav-header{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 10px 8px;margin-bottom:8px}
+.mh-logo{display:flex;align-items:center;gap:.5rem;font-weight:700;letter-spacing:.5px}
+.mh-logo-badge{height:28px;width:28px;border-radius:8px;background:#111827;display:grid;place-items:center;border:1px solid var(--mh-border);color:#fff;font-size:.8rem}
+
+.mh-sidenav .mh-group{margin-top:4px}
+.mh-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:#cbd5e1;text-decoration:none}
+.mh-item:hover{background:rgba(255,255,255,.04);color:#fff}
+a[data-nav].active{background:rgba(255,255,255,.07);color:#fff;box-shadow: inset 3px 0 0 0 #ffffff22}
+
+.mh-icn{height:28px;width:28px;border-radius:8px;display:grid;place-items:center;color:#fff;flex:0 0 28px}
+.mh-icn svg{height:18px;width:18px;stroke:currentColor}
+
+.icn-blue{background:#2563eb}
+.icn-teal{background:#0d9488}
+.icn-purple{background:#7c3aed}
+.icn-orange{background:#ea580c}
+.icn-pink{background:#db2777}
+.icn-yellow{background:#ca8a04}
+.icn-cyan{background:#0891b2}
+.icn-green{background:#16a34a}
+.icn-gray{background:#6b7280}
+
+.mh-split{height:1px;background:linear-gradient(90deg,transparent,#1f2937,transparent);margin:10px 6px}
+
+
+/* === Compact variant appended === */
+.mh-sidenav.compact{ width:220px; }
+.mh-sidenav.compact .mh-sidenav-header{ padding:6px 8px; margin-bottom:6px }
+.mh-sidenav.compact .mh-logo-badge{ width:24px; height:24px; border-radius:6px; font-size:.7rem }
+.mh-sidenav.compact .mh-logo span+span{ display:none }
+.mh-sidenav.compact .mh-item{ padding:8px 10px; gap:10px }
+.mh-sidenav.compact .mh-icn{ width:26px; height:26px }
+.mh-sidenav.compact .mh-split{ margin:8px 6px }
+
+
+/* === Compact variant enforced === */
+.mh-sidenav.compact{ width:220px; }
+
+
+/* === Light-mode card separation & accent borders === */
+html:not(.dark) .mh-card{ background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; }
+html:not(.dark) .mh-card-2{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:16px; }
+
+/* Accent border variants mapped to menu icon colors */
+.card-accent-blue{ border-color: #2563eb33 !important; box-shadow: 0 0 0 1px #2563eb1f inset; }
+.card-accent-green{ border-color: #16a34a33 !important; box-shadow: 0 0 0 1px #16a34a1f inset; }
+.card-accent-teal{ border-color: #0d948833 !important; box-shadow: 0 0 0 1px #0d94881f inset; }
+.card-accent-purple{ border-color: #7c3aed33 !important; box-shadow: 0 0 0 1px #7c3aed1f inset; }
+.card-accent-orange{ border-color: #ea580c33 !important; box-shadow: 0 0 0 1px #ea580c1f inset; }
+.card-accent-pink{ border-color: #db277733 !important; box-shadow: 0 0 0 1px #db27771f inset; }
+.card-accent-yellow{ border-color: #ca8a0433 !important; box-shadow: 0 0 0 1px #ca8a041f inset; }
+.card-accent-cyan{ border-color: #0891b233 !important; box-shadow: 0 0 0 1px #0891b21f inset; }
+.card-accent-gray{ border-color: #6b728033 !important; box-shadow: 0 0 0 1px #6b72801f inset; }
+
