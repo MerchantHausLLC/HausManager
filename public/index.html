@@ -12,6 +12,17 @@
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+      // Play the startup sound once when the page finishes loading. We wait for
+      // the DOMContentLoaded event to ensure the audio element exists. The
+      // `play()` call may be blocked by some browsers until a user gesture,
+      // which is acceptable as this is a simple notification.
+      window.addEventListener('DOMContentLoaded', function () {
+        const startup = document.getElementById('startup-sound');
+        if (startup) {
+          startup.volume = 0.4;
+          startup.play().catch(() => {});
+        }
+      });
       tailwind.config = {
         darkMode: 'class',
         theme: {
@@ -36,26 +47,23 @@
         font-family: Lexend, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
           Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji',
           'Segoe UI Emoji', sans-serif;
+        /* Use the provided hero image as a full‑page background. The image ships as a
+           WebP file for better performance. We also darken it slightly for
+           readability. */
+        background-image: url('assets/images/hero.webp');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
       }
-      .page-bg::before {
+      body::after {
+        /* Dark overlay to improve contrast on top of the background image */
         content: '';
         position: absolute;
-        inset: -20vmax;
-        background: radial-gradient(60vmax 60vmax at 15% 25%, rgba(220, 39, 67, 0.25), transparent 60%), radial-gradient(60vmax 60vmax at 85% 30%, rgba(109, 255, 202, 0.2), transparent 60%), radial-gradient(70vmax 70vmax at 50% 85%, rgba(226, 232, 240, 0.08), transparent 60%);
-        filter: blur(40px);
-        animation: drift 18s linear infinite;
-        z-index: 0;
-      }
-      @keyframes drift {
-        0% {
-          transform: translate3d(0, 0, 0) rotate(0deg);
-        }
-        50% {
-          transform: translate3d(1.8%, -1.2%, 0) rotate(180deg);
-        }
-        100% {
-          transform: translate3d(0, 0, 0) rotate(360deg);
-        }
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        pointer-events: none;
+        z-index: -1;
       }
       .glow-wrap {
         position: relative;
@@ -79,7 +87,8 @@
     </style>
   </head>
   <body class="h-full bg-slate-950 text-slate-100 relative overflow-hidden">
-    <div class="page-bg absolute inset-0"></div>
+    <!-- Startup sound: plays a short tone when the page loads. Hidden audio element -->
+    <audio id="startup-sound" src="assets/sounds/startup.wav" preload="auto"></audio>
     <main class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
       <div class="h-64 relative w-full flex flex-col items-center justify-center overflow-hidden rounded-md">
         <h1 class="md:text-7xl text-5xl lg:text-6xl font-mono text-center text-white relative z-20">
