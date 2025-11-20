@@ -329,6 +329,43 @@ function initNewOrderButton() {
 // On DOMContentLoaded, auto‑detect which page we are on based on the presence of
 // specific table bodies and load data accordingly.
 document.addEventListener('DOMContentLoaded', () => {
+  // THEME SWITCHER
+  const html = document.documentElement;
+  const themeSelect = document.getElementById('theme-select');
+
+  const applyTheme = (theme) => {
+    if (!theme) theme = 'default';
+    html.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('hm-theme', theme);
+    } catch (e) {
+      // ignore storage errors
+    }
+  };
+
+  // Load saved theme
+  let savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem('hm-theme');
+  } catch (e) {}
+
+  if (themeSelect) {
+    if (savedTheme) {
+      themeSelect.value = savedTheme;
+    } else {
+      savedTheme = themeSelect.value;
+    }
+    applyTheme(savedTheme);
+
+    themeSelect.addEventListener('change', () => {
+      applyTheme(themeSelect.value);
+    });
+  } else if (savedTheme) {
+    // Apply saved theme even if no selector (e.g. login page)
+    applyTheme(savedTheme);
+  }
+
+  // EXISTING PAGE BOOTSTRAP (KEEP THIS LOGIC, JUST MOVE IT HERE)
   if (document.getElementById('orders-table-body')) {
     loadOrders();
     initOrderPageInteractions();
