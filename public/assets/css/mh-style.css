@@ -179,6 +179,8 @@ body {
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
+  background: var(--mh-bg);
+  color: var(--mh-text);
 }
 body::before {
   content: '';
@@ -206,7 +208,7 @@ body::before {
 /* Glassy surfaces for cards and panels */
 .mh-card,
 .mh-card-2 {
-  background: rgba(22, 22, 22, 0.8);
+  background: var(--mh-card-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -223,4 +225,42 @@ body::before {
 a[data-nav].active {
   background-color: rgba(220, 39, 67, 0.18) !important;
   color: white !important;
+}
+
+/* === Theme variants === */
+:root {
+  --mh-bg: #050816;
+  --mh-card: #0f172a;
+  --mh-card-glass: rgba(15, 23, 42, 0.85);
+  --mh-text: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --mh-bg: #020617;
+  --mh-card: #020617;
+  --mh-card-glass: rgba(15, 23, 42, 0.9);
+  --mh-text: #f9fafb;
+}
+
+[data-theme="light"] {
+  --mh-bg: #f3f4f6;
+  --mh-card: #ffffff;
+  --mh-card-glass: rgba(255, 255, 255, 0.85);
+  --mh-text: #111827;
+}
+
+[data-theme="brand"] {
+  --mh-bg: radial-gradient(circle at top left, #1b0b2f 0, #050816 50%, #030712 100%);
+  --mh-card: rgba(15, 23, 42, 0.9);
+  --mh-card-glass: rgba(220, 39, 67, 0.18); /* brand red glow */
+  --mh-text: #fee2e2;
+}
+
+/* Card / panel surfaces */
+.mh-main-card,
+.bg-card,
+.mh-panel {
+  background: var(--mh-card-glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
 }
