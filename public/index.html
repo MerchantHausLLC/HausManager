@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Lexend:wght@100;400&display=swap"
       rel="stylesheet"
     />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       // Play the startup sound once when the page finishes loading. We wait for
@@ -43,35 +44,51 @@
       };
     </script>
     <style>
+      /* Base typography */
       body {
         font-family: Lexend, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
           Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji',
           'Segoe UI Emoji', sans-serif;
-        /* Use the provided hero image as a full‑page background. The image ships as a
-           WebP file for better performance. We also darken it slightly for
-           readability. */
-        background-image: url('assets/images/hero.webp');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
       }
-      body::after {
-        /* Dark overlay to improve contrast on top of the background image */
+      /* Swirling radial background similar to the reference CRM */
+      body::before {
         content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        pointer-events: none;
+        position: fixed;
+        inset: -20vmax;
         z-index: -1;
+        background:
+          radial-gradient(60vmax 60vmax at 20% 30%, rgba(220, 39, 67, 0.25), transparent 60%),
+          radial-gradient(60vmax 60vmax at 80% 20%, rgba(109, 255, 202, 0.20), transparent 60%),
+          radial-gradient(70vmax 70vmax at 50% 80%, rgba(226, 232, 240, 0.10), transparent 60%);
+        filter: blur(40px);
+        animation: drift 18s linear infinite;
       }
+      @keyframes drift {
+        0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+        50%  { transform: translate3d(1.8%, -1.2%, 0) rotate(180deg); }
+        100% { transform: translate3d(0, 0, 0) rotate(360deg); }
+      }
+      /* Card glow effect reused from the original design */
       .glow-wrap {
         position: relative;
         padding: 2px;
         border-radius: 18px;
-        background: conic-gradient(from var(--angle), rgba(220, 39, 67, 0.95), rgba(220, 39, 67, 0.35) 18%, rgba(109, 255, 202, 0.95) 35%, rgba(220, 39, 67, 0.35) 52%, rgba(239, 60, 91, 0.95) 70%, rgba(109, 255, 202, 0.45) 86%, rgba(220, 39, 67, 0.95));
+        background: conic-gradient(
+          from var(--angle),
+          rgba(220, 39, 67, 0.95),
+          rgba(220, 39, 67, 0.35) 18%,
+          rgba(109, 255, 202, 0.95) 35%,
+          rgba(220, 39, 67, 0.35) 52%,
+          rgba(239, 60, 91, 0.95) 70%,
+          rgba(109, 255, 202, 0.45) 86%,
+          rgba(220, 39, 67, 0.95)
+        );
         animation: spin 6s linear infinite;
-        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 15px 60px rgba(220, 39, 67, 0.25);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03),
+          0 15px 60px rgba(220, 39, 67, 0.25);
       }
       @keyframes spin {
         to {
@@ -106,14 +123,34 @@
             <form id="login-form" class="px-7 pb-7 space-y-4">
               <div class="space-y-1.5">
                 <label for="email" class="text-sm text-slate-300">Email</label>
-                <input id="email" type="email" required autocomplete="username" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent" placeholder="you@example.com" />
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  autocomplete="username"
+                  class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                  placeholder="you@example.com"
+                />
               </div>
               <div class="space-y-1.5">
                 <label for="password" class="text-sm text-slate-300">Password</label>
-                <input id="password" type="password" required autocomplete="current-password" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent" placeholder="••••••••" />
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  autocomplete="current-password"
+                  class="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                  placeholder="••••••••"
+                />
               </div>
-              <div id="login-error" class="text-red-500 text-sm hidden">Please enter both email and password.</div>
-              <button id="sign-in-btn" type="submit" class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-3 font-medium text-white transition-colors">
+              <div id="login-error" class="text-red-500 text-sm hidden">
+                Please enter both email and password.
+              </div>
+              <button
+                id="sign-in-btn"
+                type="submit"
+                class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-3 font-medium text-white transition-colors"
+              >
                 Sign In
               </button>
             </form>

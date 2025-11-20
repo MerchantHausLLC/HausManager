@@ -1,4 +1,10 @@
-/* Merchant House unified theme (v1) */
+/* Merchant House unified theme (v1)
+   This file extends the existing Merchant Haus theme to bring in the
+   swirling gradient backgrounds and glassy surfaces from the provided
+   reference design. It keeps all of the original variables and
+   component styles while adding additional rules at the end to
+   transform the look and feel. */
+
 :root{
   --mh-bg: #0b0e14;
   --mh-card: #121826;
@@ -24,7 +30,7 @@ html.dark, body.dark{background:var(--mh-bg); color:var(--mh-text)}
 .mh-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1rem}
 .mh-card h3{font-weight:700}
 
-/* Centralized from HTML files */
+/* Centralised gradient text styling reused across pages */
 .grad-text {
   display:inline-block;
   background: linear-gradient(90deg, var(--mh-brand-700), var(--mh-brand-500), var(--mh-brand-700));
@@ -39,10 +45,63 @@ html.dark, body.dark{background:var(--mh-bg); color:var(--mh-text)}
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* active nav link */
+/* active nav link colouring */
 a[data-nav].active{background-color: rgba(220,39,67,0.18)!important; color:white!important}
 /* subtle fixes for Tailwind dark overrides across pages */
 .dark .text-slate-300{color:#cbd5e1!important}
 .dark .bg-slate-900{background:#0b1220!important}
 .dark .bg-slate-800{background:#0e1525!important}
 .dark .border-slate-800{border-color:#1f2937!important}
+
+/*
+ * New theme adjustments inspired by the reference CRM design. These
+ * additions introduce a swirling radial gradient background, hide the
+ * coloured icon squares to create a cleaner navigation, and apply
+ * glassy surfaces to cards and panels. The rules are placed after
+ * the existing definitions so they override where appropriate.
+ */
+
+/* Swirling radial gradient background */
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20vmax;
+  z-index: -1;
+  background:
+    radial-gradient(60vmax 60vmax at 15% 25%, rgba(220,39,67,.25), transparent 60%),
+    radial-gradient(60vmax 60vmax at 85% 30%, rgba(109,255,202,.20), transparent 60%),
+    radial-gradient(70vmax 70vmax at 50% 85%, rgba(226,232,240,.08), transparent 60%);
+  filter: blur(40px);
+  animation: drift 18s linear infinite;
+}
+@keyframes drift {
+  0%   { transform: translate3d(0,0,0) rotate(0deg); }
+  50%  { transform: translate3d(1.8%, -1.2%, 0) rotate(180deg); }
+  100% { transform: translate3d(0,0,0) rotate(360deg); }
+}
+
+/* Hide nav icons to match minimalistic UI */
+.mh-icn {
+  display: none;
+}
+
+/* Glassy cards and panels */
+.mh-card,
+.mh-card-2 {
+  background: rgba(22, 22, 22, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+
+/* Adjust header glass for better contrast */
+.header-glass {
+  background-color: rgba(0,0,0,0.5) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
