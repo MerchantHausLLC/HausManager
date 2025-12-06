@@ -1,661 +1,440 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MerchantHaus — Dashboard (Improved)</title>
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
-  <!-- Styles: dark theme similar to new portal -->
-  <style>
-    :root {
-      --brand-red: #ef3c5b;
-      --brand-green: #6dffca;
-      --ink: #f5f5f5;
-      --muted: #b3b3b3;
-      --bg-surface: rgba(255, 255, 255, .06);
-      --border-color: rgba(255, 255, 255, .12);
-      --main-bg: #020617;
-      --header-bg: rgba(0,0,0,.35);
-    }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background-color: var(--main-bg);
-      overflow: hidden;
-    }
-    header {
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--header-bg);
-      border-bottom: 1px solid var(--border-color);
-      z-index: 50;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .logo {
-      width: 24px;
-      height: 24px;
-    }
-    .title {
-      font-family: "Major Mono Display", monospace;
-      letter-spacing: 1px;
-      font-size: 18px;
-      color: #fff;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-surface);
-      color: var(--ink);
-      padding: 8px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .btn:hover { background: rgba(255,255,255,.1); }
-    main {
-      position: relative;
-      height: 100vh;
-      padding-top: 56px;
-      overflow: hidden;
-    }
-    .dock {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-    .app-icon {
-      min-height: 120px;
-      border-radius: 16px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 8px 30px rgba(0,0,0,.5);
-      padding: 14px 14px 16px;
-      transition: transform 0.2s, box-shadow 0.3s;
-    }
-    .app-icon:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,.6);
-    }
-    .app-icon h2 {
-      margin: 0 0 8px;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--brand-green);
-    }
-    .app-icon p {
-      margin: 0 0 10px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-    .cta {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: none;
-      background: var(--brand-red);
-      color: #111;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .cta:hover { background: #d82f4c; }
-    /* Window styling */
-    .window {
-      display: none;
-      position: absolute;
-      width: 800px;
-      max-width: 90vw;
-      min-height: 300px;
-      border-radius: 16px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 12px 50px rgba(0,0,0,.6);
-      backdrop-filter: blur(12px);
-      user-select: none;
-      overflow: hidden;
-    }
-    .window-header {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 12px;
-      background: rgba(255,255,255,.05);
-      cursor: pointer;
-    }
-    .window-title {
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .window-controls {
-      display: flex;
-      gap: 6px;
-    }
-    .window-btn {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-    }
-    .close-btn { background-color: #ff5f56; }
-    .window-content {
-      padding: 20px;
-      height: calc(100% - 40px);
-      overflow-y: auto;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
-    }
-    .form-group label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      display: block;
-    }
-    .form-input {
-      background-color: rgba(0,0,0,0.2);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 14px;
-      color: var(--ink);
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .content-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      margin-top: 16px;
-    }
-    .content-table th, .content-table td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .content-table thead th {
-      color: var(--muted);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.5px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">
-      <div class="title">Haus Manager</div>
-    </div>
-    <div></div>
-  </header>
-  <main id="desktop">
-    <div class="dock">
-      <!-- Payment and reporting modules -->
-      <section class="app-icon"><h2>Checkout</h2><p>Process one‑time payments.</p><button class="cta" data-action="open:checkout">Open</button></section>
-      <section class="app-icon"><h2>Reports</h2><p>View recent transactions.</p><button class="cta" data-action="open:reports">Open</button></section>
-      <section class="app-icon"><h2>Recurring</h2><p>Manage subscriptions.</p><button class="cta" data-action="open:recurring">Open</button></section>
-      <section class="app-icon"><h2>Customer Vault</h2><p>Manage stored customer cards.</p><button class="cta" data-action="open:vault">Open</button></section>
-      <section class="app-icon"><h2>Invoices</h2><p>Create and send invoices.</p><button class="cta" data-action="open:invoices">Open</button></section>
-      <!-- Partner modules -->
-      <section class="app-icon"><h2>Merchants</h2><p>Onboard and manage merchants.</p><button class="cta" data-action="open:merchants">Open</button></section>
-      <section class="app-icon"><h2>Users</h2><p>Manage merchant users.</p><button class="cta" data-action="open:users">Open</button></section>
-      <section class="app-icon"><h2>Billing &amp; Commission</h2><p>View billing & commission reports.</p><button class="cta" data-action="open:billing">Open</button></section>
-    </div>
-    <!-- Checkout Window -->
-    <div id="window-checkout" class="window">
-      <div class="window-header"><span class="window-title">Checkout</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:checkout"></button></div></div>
-      <div class="window-content">
-        <form id="checkout-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="card-name">Cardholder Name</label><input type="text" id="card-name" class="form-input" placeholder="John Doe" /></div>
-          <div class="form-group"><label>Card Number</label><div id="card-number" class="form-input"></div></div>
-          <div class="form-group"><label>Expiration Date</label><div id="exp-date" class="form-input"></div></div>
-          <div class="form-group"><label>CVV</label><div id="cvv" class="form-input"></div></div>
-          <div class="form-group"><label for="amount">Amount</label><input type="number" id="amount" class="form-input" min="0" step="0.01" placeholder="0.00" /></div>
-          <div class="form-group"><button type="button" id="pay-button" class="cta">Pay</button></div>
-        </form>
-        <pre id="payment-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Reports Window -->
-    <div id="window-reports" class="window">
-      <div class="window-header"><span class="window-title">Transaction Reports</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:reports"></button></div></div>
-      <div class="window-content">
-        <button id="fetch-reports" class="cta">Fetch Transactions</button>
-        <table id="transactions-table" class="content-table"><thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transactions-body"></tbody></table>
-        <pre id="report-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Recurring Window -->
-    <div id="window-recurring" class="window">
-      <div class="window-header"><span class="window-title">Recurring</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:recurring"></button></div></div>
-      <div class="window-content">
-        <h3>Create Subscription</h3>
-        <form id="recurring-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="rec-plan-payments">Plan Payments</label><input type="number" id="rec-plan-payments" class="form-input" min="1" step="1" placeholder="e.g., 12" /></div>
-          <div class="form-group"><label for="rec-plan-amount">Plan Amount</label><input type="number" id="rec-plan-amount" class="form-input" min="0" step="0.01" placeholder="e.g., 10.00" /></div>
-          <div class="form-group"><label for="rec-day-frequency">Day Frequency</label><input type="number" id="rec-day-frequency" class="form-input" min="1" step="1" placeholder="e.g., 30" /></div>
-          <div class="form-group"><label>Card Number</label><div id="rec-card-number" class="form-input"></div></div>
-          <div class="form-group"><label>Expiration Date</label><div id="rec-exp-date" class="form-input"></div></div>
-          <div class="form-group"><label>CVV</label><div id="rec-cvv" class="form-input"></div></div>
-          <div class="form-group"><button type="button" id="rec-submit" class="cta">Create Subscription</button></div>
-        </form>
-        <pre id="rec-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Vault Window -->
-    <div id="window-vault" class="window">
-      <div class="window-header"><span class="window-title">Customer Vault</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:vault"></button></div></div>
-      <div class="window-content">
-        <h3>Add Customer to Vault</h3>
-        <form id="vault-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label>Cardholder Name</label><input type="text" id="vault-card-name" class="form-input" placeholder="John Doe" /></div>
-          <div class="form-group"><label>Card Number</label><div id="vault-card-number" class="form-input"></div></div>
-          <div class="form-group"><label>Expiration Date</label><div id="vault-exp-date" class="form-input"></div></div>
-          <div class="form-group"><label>CVV</label><div id="vault-cvv" class="form-input"></div></div>
-          <div class="form-group"><button type="button" id="vault-submit" class="cta">Add to Vault</button></div>
-        </form>
-        <pre id="vault-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-        <h3>Charge Customer from Vault</h3>
-        <form id="vault-charge-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="vault-id">Customer Vault ID</label><input type="text" id="vault-id" class="form-input" /></div>
-          <div class="form-group"><label for="vault-charge-amount">Amount</label><input type="number" id="vault-charge-amount" class="form-input" min="0" step="0.01" /></div>
-          <div class="form-group"><button type="button" id="vault-charge-submit" class="cta">Charge</button></div>
-        </form>
-        <pre id="vault-charge-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Invoices Window -->
-    <div id="window-invoices" class="window">
-      <div class="window-header"><span class="window-title">Invoices</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:invoices"></button></div></div>
-      <div class="window-content">
-        <h3>Create Invoice</h3>
-        <form id="invoice-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="invoice-email">Customer Email</label><input type="email" id="invoice-email" class="form-input" placeholder="customer@example.com" /></div>
-          <div class="form-group"><label for="invoice-amount">Amount</label><input type="number" id="invoice-amount" class="form-input" min="0" step="0.01" placeholder="100.00" /></div>
-          <div class="form-group"><button type="button" id="invoice-create" class="cta">Create Invoice</button></div>
-        </form>
-        <pre id="invoice-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Merchants Window -->
-    <div id="window-merchants" class="window">
-      <div class="window-header"><span class="window-title">Merchants</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:merchants"></button></div></div>
-      <div class="window-content">
-        <h3>Merchant List</h3>
-        <button id="merchants-fetch" class="cta">Fetch Merchant List</button>
-        <pre id="merchants-list" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
-        <h3>Create Merchant</h3>
-        <form id="merchant-create-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="merch-business-name">Business Name</label><input type="text" id="merch-business-name" class="form-input" /></div>
-          <div class="form-group"><label for="merch-first-name">First Name</label><input type="text" id="merch-first-name" class="form-input" /></div>
-          <div class="form-group"><label for="merch-last-name">Last Name</label><input type="text" id="merch-last-name" class="form-input" /></div>
-          <div class="form-group"><label for="merch-email">Email</label><input type="email" id="merch-email" class="form-input" /></div>
-          <div class="form-group"><label for="merch-phone">Phone</label><input type="text" id="merch-phone" class="form-input" /></div>
-          <div class="form-group"><button type="button" id="merchant-create" class="cta">Create Merchant</button></div>
-        </form>
-        <pre id="merchant-create-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-        <h3>Create Merchant API Key</h3>
-        <form id="merchant-key-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="merch-key-id">Merchant ID</label><input type="text" id="merch-key-id" class="form-input" /></div>
-          <div class="form-group"><button type="button" id="merchant-key-create" class="cta">Generate API Key</button></div>
-        </form>
-        <pre id="merchant-key-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Users Window -->
-    <div id="window-users" class="window">
-      <div class="window-header"><span class="window-title">Users</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:users"></button></div></div>
-      <div class="window-content">
-        <h3>User List</h3>
-        <form id="users-list-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="list-users-merchant-id">Merchant ID</label><input type="text" id="list-users-merchant-id" class="form-input" /></div>
-          <div class="form-group"><button type="button" id="users-fetch" class="cta">Fetch User List</button></div>
-        </form>
-        <pre id="users-list" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
-        <h3>Create User</h3>
-        <form id="user-create-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="user-merchant-id">Merchant ID</label><input type="text" id="user-merchant-id" class="form-input" /></div>
-          <div class="form-group"><label for="user-username">Username</label><input type="text" id="user-username" class="form-input" /></div>
-          <div class="form-group"><label for="user-email">Email</label><input type="email" id="user-email" class="form-input" /></div>
-          <div class="form-group"><label for="user-first-name">First Name</label><input type="text" id="user-first-name" class="form-input" /></div>
-          <div class="form-group"><label for="user-last-name">Last Name</label><input type="text" id="user-last-name" class="form-input" /></div>
-          <div class="form-group"><label for="user-role">Role</label><input type="text" id="user-role" class="form-input" placeholder="e.g., admin" /></div>
-          <div class="form-group"><button type="button" id="user-create" class="cta">Create User</button></div>
-        </form>
-        <pre id="user-create-response" style="white-space: pre-wrap; word-break: break-word;"></pre>
-      </div>
-    </div>
-    <!-- Billing Window -->
-    <div id="window-billing" class="window">
-      <div class="window-header"><span class="window-title">Billing &amp; Commission</span><div class="window-controls"><button class="window-btn close-btn" data-action="close:billing"></button></div></div>
-      <div class="window-content">
-        <h3>Merchant Billing</h3>
-        <form id="billing-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="billing-merchant-id">Merchant ID</label><input type="text" id="billing-merchant-id" class="form-input" /></div>
-          <div class="form-group"><button type="button" id="billing-fetch" class="cta">Fetch Billing</button></div>
-        </form>
-        <pre id="billing-response" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
-        <h3>Commission</h3>
-        <form id="commission-form" class="form-grid" onsubmit="return false;">
-          <div class="form-group"><label for="commission-merchant-id">Merchant ID</label><input type="text" id="commission-merchant-id" class="form-input" /></div>
-          <div class="form-group"><button type="button" id="commission-fetch" class="cta">Fetch Commission</button></div>
-        </form>
-        <pre id="commission-response" style="white-space: pre-wrap; word-break: break-word; margin-top: 8px;"></pre>
-      </div>
-    </div>
-  </main>
-  <script>
-    // Utility to manage windows
-    document.addEventListener('click', (evt) => {
-      const target = evt.target.closest('[data-action]');
-      if (!target) return;
-      const [action, id] = target.getAttribute('data-action').split(':');
-      if (action === 'open') {
-        const win = document.getElementById('window-' + id);
-        if (win) {
-          win.style.display = 'block';
-          win.style.zIndex = Date.now().toString();
-        }
-      } else if (action === 'close') {
-        const win = document.getElementById('window-' + id);
-        if (win) win.style.display = 'none';
-      }
-    });
-    // Fetch tokenization key and load CollectJS
-    async function loadCollect() {
-      try {
-        const res = await fetch('/.netlify/functions/getTokenizationKey');
-        const data = await res.json();
-        const tokenKey = data.token || data.key || data.tokenization_key;
-        const script = document.createElement('script');
-        script.src = 'https://secure.nmi.com/token/Collect.js';
-        script.setAttribute('data-tokenization-key', tokenKey);
-        script.setAttribute('data-variant', 'inline');
-        document.head.appendChild(script);
-        script.onload = () => {
-          console.log('CollectJS loaded');
-        };
-      } catch (err) {
-        console.error('Failed to load CollectJS:', err);
-      }
-    }
-    loadCollect();
-    // Payment handler
-    function handlePayment() {
-      const amount = document.getElementById('amount').value || '0.00';
-      if (typeof CollectJS === 'undefined') {
-        document.getElementById('payment-response').textContent = 'Tokenization library not loaded';
-        return;
-      }
-      CollectJS.tokenize({}, async function(resp) {
-        const token = resp.token || resp.payment_token;
-        try {
-          const res = await fetch('/.netlify/functions/processPayment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount: amount, payment_token: token })
-          });
-          const text = await res.text();
-          document.getElementById('payment-response').textContent = text;
-        } catch (err) {
-          document.getElementById('payment-response').textContent = 'Error: ' + err;
-        }
-      }, function(error) {
-        document.getElementById('payment-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
-      });
-    }
-    // Listeners for actions once DOM content loaded
-    document.addEventListener('DOMContentLoaded', () => {
-      // Payment button
-      const payBtn = document.getElementById('pay-button');
-      if (payBtn) payBtn.addEventListener('click', handlePayment);
-      // Fetch transactions
-      const reportBtn = document.getElementById('fetch-reports');
-      if (reportBtn) reportBtn.addEventListener('click', async () => {
-        const tbody = document.getElementById('transactions-body');
-        tbody.innerHTML = '';
-        document.getElementById('report-response').textContent = 'Loading...';
-        try {
-          const res = await fetch('/.netlify/functions/listTransactions');
-          const text = await res.text();
-          // parse query string lines
-          const lines = text.trim().split(/\r?\n/);
-          lines.forEach(line => {
-            if (!line) return;
-            const params = new URLSearchParams(line);
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${params.get('transaction_id') || ''}</td><td>${params.get('transaction_type') || ''}</td><td>${params.get('amount') || ''}</td><td>${params.get('response_text') || ''}</td>`;
-            tbody.appendChild(tr);
-          });
-          if (!lines.length) document.getElementById('report-response').textContent = 'No transactions found.'; else document.getElementById('report-response').textContent = '';
-        } catch (err) {
-          document.getElementById('report-response').textContent = 'Error: ' + err;
-        }
-      });
-      // Recurring subscription
-      const recBtn = document.getElementById('rec-submit');
-      if (recBtn) recBtn.addEventListener('click', () => {
-        if (typeof CollectJS === 'undefined') {
-          document.getElementById('rec-response').textContent = 'Tokenization library not loaded';
-          return;
-        }
-        CollectJS.configure({
-          variant: 'inline',
-          fields: { cardNumber: { selector: '#rec-card-number' }, expirationDate: { selector: '#rec-exp-date' }, cvv: { selector: '#rec-cvv' } }
-        });
-        CollectJS.tokenize({}, async function(resp) {
-          const token = resp.token || resp.payment_token;
-          const payload = {
-            plan_payments: document.getElementById('rec-plan-payments').value,
-            plan_amount: document.getElementById('rec-plan-amount').value,
-            day_frequency: document.getElementById('rec-day-frequency').value,
-            payment_token: token
-          };
-          try {
-            const res = await fetch('/.netlify/functions/createSubscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            const text = await res.text();
-            document.getElementById('rec-response').textContent = text;
-          } catch (err) {
-            document.getElementById('rec-response').textContent = 'Error: ' + err;
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RM – Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'Apple Color Emoji', 'Segoe UI Emoji'],
+        },
+        keyframes: {
+          gradientMove: {
+            '0%': { backgroundPosition: '0% 50%' },
+            '50%': { backgroundPosition: '100% 50%' },
+            '100%': { backgroundPosition: '0% 50%' },
+          },
+          fadeInUp: {
+            '0%': { opacity: '0', transform: 'translateY(6px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' },
           }
-        }, function(error) {
-          document.getElementById('rec-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
-        });
-      });
-      // Vault add customer
-      const vaultAddBtn = document.getElementById('vault-submit');
-      if (vaultAddBtn) vaultAddBtn.addEventListener('click', () => {
-        if (typeof CollectJS === 'undefined') {
-          document.getElementById('vault-response').textContent = 'Tokenization library not loaded';
-          return;
+        },
+        animation: {
+          'gradient-move': 'gradientMove 6s ease infinite',
+          'fade-in-up': 'fadeInUp 300ms ease forwards',
+        },
+        boxShadow: {
+          soft: '0 4px 20px rgba(0,0,0,0.06)'
         }
-        CollectJS.configure({
-          variant: 'inline',
-          fields: { cardNumber: { selector: '#vault-card-number' }, expirationDate: { selector: '#vault-exp-date' }, cvv: { selector: '#vault-cvv' } }
-        });
-        CollectJS.tokenize({}, async function(resp) {
-          const token = resp.token || resp.payment_token;
-          const payload = {
-            first_name: document.getElementById('vault-card-name').value,
-            payment_token: token
-          };
-          try {
-            const res = await fetch('/.netlify/functions/addCustomerToVault', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            const text = await res.text();
-            document.getElementById('vault-response').textContent = text;
-          } catch (err) {
-            document.getElementById('vault-response').textContent = 'Error: ' + err;
+      }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --brand-400: #ef3c5b;
+    --brand-600: #dc2743;
+    --brand-700: #c21b35;
+
+    --accent-yellow: #FFD700;
+    --accent-green: #39FF14;
+    --accent-cyan:   #08D9D6;
+    --accent-purple: #A020F0;
+    --accent-orange: #CC5500;
+
+    --bg-app: #f8fafc;
+    --text-main: #0f172a;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg,
+      var(--accent-yellow),
+      var(--accent-green),
+      var(--accent-cyan),
+      var(--accent-purple),
+      var(--accent-orange)
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientMove 6s ease infinite;
+  }
+
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-400, #ef3c5b, 0.6);
+  }
+
+  .brand-sheen {
+    background-image:
+      radial-gradient( at 20% 20%, rgba(255,255,255,0.12) 0px, transparent 30% ),
+      radial-gradient( at 80% 0%, rgba(255,255,255,0.08) 0px, transparent 40% );
+  }
+</style>
+
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif; }
+    </style>
+  </head>
+  <body class="h-full bg-[var(--bg-app)] text-slate-900">
+    <div class="flex min-h-screen">
+      <!-- Off-canvas for mobile -->
+      <div id="mobile-overlay" class="fixed inset-0 bg-black/30 z-30 hidden"></div>
+      <aside id="sidebar" class="fixed z-40 inset-y-0 left-0 w-72 transform -translate-x-full md:translate-x-0 md:static md:z-auto bg-white border-r border-slate-200 transition-transform">
+        <div class="h-16 flex items-center gap-3 px-4 border-b">
+          <img src="./assets/brand.svg" alt="RM" class="h-6 w-6" data-logo />
+          <span class="text-lg font-semibold gradient-text">Retail Manager</span>
+        </div>
+        <nav class="p-4 space-y-1">
+          <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-[var(--brand-700)] bg-[color:rgba(220,39,67,0.08)] border-l-4 border-[var(--brand-600)]">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.5"></path><path d="M19 10v9a1 1 0 0 1-1 1h-4v-6H10v6H6a1 1 0 0 1-1-1v-9" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Dashboard
+          </a>
+          <a href="inventory.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="14" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="3" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="14" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect></svg>
+            Inventory
+          </a>
+          <a href="products.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Products
+          </a>
+          <a href="orders.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M6 6h12l1 4H5l1-4Zm-1 4h14l-1.2 8.4a1 1 0 0 1-.99.86H7.19a1 1 0 0 1-.99-.86L5 10Zm6 3v3" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Sales / Orders
+          </a>
+          <a href="contacts.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M7 8a5 5 0 1 0 10 0A5 5 0 0 0 7 8Z" stroke="currentColor" stroke-width="1.5"></path><path d="M3 20a9 9 0 0 1 18 0" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Contacts
+          </a>
+          <a href="transactions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M3 9h18" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Transactions
+          </a>
+          <a href="subscriptions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M8 7h8M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Subscriptions
+          </a>
+          <a href="reports.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a1 1 0 0 1 1-1h14M4 19h16M4 19l4-5 4 3 4-6 4 5" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Reports
+          </a>
+          <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-700 hover:bg-slate-100">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm9 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="1.5"></path></svg>
+            Settings
+          </a>
+        </nav>
+      </aside>
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6">
+          <div class="flex items-center gap-3">
+            <button id="hamburger" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md hover:bg-slate-100" aria-label="Open menu">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5"></path></svg>
+            </button>
+            <div class="hidden md:block text-sm text-slate-500">Dashboard</div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="relative hidden md:block">
+              <input type="search" placeholder="Search…" class="w-64 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-400)]" />
+              <svg class="h-4 w-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle><path d="m20 20-3-3" stroke="currentColor" stroke-width="1.5"></path></svg>
+            </div>
+
+            <!-- Notifications -->
+            <button class="relative inline-flex items-center justify-center h-10 w-10 rounded-md hover:bg-slate-100" aria-label="Notifications">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5" stroke="currentColor" stroke-width="1.5"></path><path d="M9 18a3 3 0 0 0 6 0" stroke="currentColor" stroke-width="1.5"></path></svg>
+              <span class="absolute top-2 right-2 block h-2 w-2 rounded-full bg-[var(--brand-600)]"></span>
+            </button>
+
+            <!-- Profile menu -->
+            <div class="relative">
+              <button id="profile-btn" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-2.5 py-1.5 hover:bg-slate-50">
+                <img src="https://api.dicebear.com/9.x/thumbs/svg?seed=RM" alt="User" class="h-6 w-6 rounded-full">
+                <span class="hidden md:inline text-sm font-medium">Jane Doe</span>
+                <svg class="h-4 w-4 text-slate-500" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5"></path></svg>
+              </button>
+              <div id="profile-menu" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-md shadow-lg p-1">
+                <div class="px-3 py-2 text-sm text-slate-600">Signed in as <strong>Admin</strong></div>
+                <a href="#" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-50 text-sm">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-8 9a8 8 0 1 1 16 0H4Z" stroke="currentColor" stroke-width="1.5"></path></svg>
+                  Profile
+                </a>
+                <a href="#" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-50 text-sm">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"></path></svg>
+                  Settings
+                </a>
+                <div class="border-t my-1"></div>
+                <button onclick="setTheme(presets.default)" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Theme: Default</button>
+                <button onclick="setTheme(presets.emerald)" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Theme: Emerald</button>
+                <button onclick="setTheme(presets.indigo)" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Theme: Indigo</button>
+                <div class="border-t my-1"></div>
+                <a href="index.html" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-50 text-sm text-[var(--brand-700)]">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 9l-7 7" stroke="currentColor" stroke-width="1.5"></path></svg>
+                  Sign out
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1 p-4 md:p-6 space-y-6">
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h1 id="welcome-header" class="text-xl md:text-2xl font-semibold">Welcome back!</h1>
+              <p class="text-sm text-slate-600">Here’s your business at a glance today.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm hover:bg-slate-50">Export CSV</button>
+              <button class="rounded-md bg-[var(--brand-600)] px-3 py-2 text-sm text-white hover:bg-[var(--brand-700)]">New Report</button>
+            </div>
+          </div>
+
+          <!-- KPI cards -->
+          <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="bg-white rounded-lg shadow-soft p-4">
+              <div class="text-sm text-slate-500">Today’s Revenue</div>
+              <div class="mt-1 text-2xl font-semibold">R 5,200</div>
+              <div class="mt-1 text-xs text-slate-500">+8.1% vs yesterday</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-soft p-4">
+              <div class="text-sm text-slate-500">Transactions</div>
+              <div class="mt-1 text-2xl font-semibold">164</div>
+              <div class="mt-1 text-xs text-slate-500">+12 new</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-soft p-4">
+              <div class="text-sm text-slate-500">Average Order Value</div>
+              <div class="mt-1 text-2xl font-semibold">R 317</div>
+              <div class="mt-1 text-xs text-slate-500">-1.9% vs last week</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-soft p-4">
+              <div class="text-sm text-slate-500">Active Subscriptions</div>
+              <div class="mt-1 text-2xl font-semibold">1,028</div>
+              <div class="mt-1 text-xs text-slate-500"><span class="text-emerald-600">↑</span> 23 this week</div>
+            </div>
+          </section>
+
+          <!-- Charts -->
+          <section class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+            <div class="bg-white rounded-lg shadow-soft p-4 xl:col-span-2">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold">Revenue — last 30 days</h3>
+                <select class="rounded-md border border-slate-300 text-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[var(--brand-400)]">
+                  <option>Last 30 days</option>
+                  <option>Last 90 days</option>
+                  <option>YTD</option>
+                </select>
+              </div>
+              <div class="h-64"><canvas id="revenueChart" class="mt-3"></canvas></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-soft p-4">
+              <h3 class="font-semibold">Top Categories</h3>
+              <div class="h-64"><canvas id="categoryChart" class="mt-3"></canvas></div>
+            </div>
+          </section>
+
+          <!-- Table -->
+          <section class="bg-white rounded-lg shadow-soft p-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Recent Transactions</h3>
+              <a href="#" class="text-sm text-[var(--brand-600)] hover:text-[var(--brand-700)]">View all</a>
+            </div>
+            <div class="mt-3 overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="text-left text-slate-500">
+                  <tr class="border-b">
+                    <th class="py-2 pr-4">Date</th>
+                    <th class="py-2 pr-4">Customer</th>
+                    <th class="py-2 pr-4">Amount</th>
+                    <th class="py-2 pr-4">Status</th>
+                    <th class="py-2 pr-4">Txn ID</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">2025-08-20 10:14</td>
+                    <td class="py-2 pr-4">Lerato M.</td>
+                    <td class="py-2 pr-4 text-right">R 1,250.00</td>
+                    <td class="py-2 pr-4">
+                      <span class="inline-flex items-center rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5">Paid</span>
+                    </td>
+                    <td class="py-2 pr-4 font-mono text-xs">TXN-9F21A</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">2025-08-20 09:52</td>
+                    <td class="py-2 pr-4">A. Jacobs</td>
+                    <td class="py-2 pr-4 text-right">R 349.00</td>
+                    <td class="py-2 pr-4">
+                      <span class="inline-flex items-center rounded-full bg-yellow-100 text-yellow-800 px-2 py-0.5">Pending</span>
+                    </td>
+                    <td class="py-2 pr-4 font-mono text-xs">TXN-9F20Q</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 pr-4 whitespace-nowrap">2025-08-20 09:33</td>
+                    <td class="py-2 pr-4">S. Naidoo</td>
+                    <td class="py-2 pr-4 text-right">R 89.00</td>
+                    <td class="py-2 pr-4">
+                      <span class="inline-flex items-center rounded-full bg-rose-100 text-rose-800 px-2 py-0.5">Failed</span>
+                    </td>
+                    <td class="py-2 pr-4 font-mono text-xs">TXN-9F1Z7</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+<script>
+  function setTheme({ brand400, brand600, brand700, logoUrl } = {}) {
+    const root = document.documentElement;
+    if (brand400) root.style.setProperty('--brand-400', brand400);
+    if (brand600) root.style.setProperty('--brand-600', brand600);
+    if (brand700) root.style.setProperty('--brand-700', brand700);
+    if (logoUrl)  {
+      const logos = document.querySelectorAll('[data-logo]');
+      logos.forEach(el => { el.src = logoUrl; el.alt = 'Client Logo'; });
+    }
+  }
+
+  const presets = {
+    default: { brand400: '#ef3c5b', brand600: '#dc2743', brand700: '#c21b35' },
+    emerald: { brand400: '#34d399', brand600: '#059669', brand700: '#047857' },
+    indigo:  { brand400: '#818cf8', brand600: '#4f46e5', brand700: '#4338ca' },
+    teal:    { brand400: '#5eead4', brand600: '#14b8a6', brand700: '#0f766e' },
+  };
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      const hamburger = document.getElementById('hamburger');
+      const profileBtn = document.getElementById('profile-btn');
+      const profileMenu = document.getElementById('profile-menu');
+
+      hamburger?.addEventListener('click', () => { 
+        sidebar.classList.toggle('-translate-x-full'); 
+        overlay.classList.toggle('hidden');
+      });
+      overlay?.addEventListener('click', () => { 
+        sidebar.classList.add('-translate-x-full'); 
+        overlay.classList.add('hidden');
+      });
+      profileBtn?.addEventListener('click', () => {
+        profileMenu.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (e) => {
+        if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+          profileMenu.classList.add('hidden');
+        }
+      });
+
+      function brand() { 
+        const styles = getComputedStyle(document.documentElement);
+        return {
+          b400: styles.getPropertyValue('--brand-400').trim() || '#ef3c5b',
+          b600: styles.getPropertyValue('--brand-600').trim() || '#dc2743',
+          b700: styles.getPropertyValue('--brand-700').trim() || '#c21b35',
+        };
+      }
+
+      const revCtx = document.getElementById('revenueChart')?.getContext('2d');
+      const catCtx = document.getElementById('categoryChart')?.getContext('2d');
+
+      if (revCtx) { 
+        const b = brand();
+        new Chart(revCtx, {
+          type: 'line',
+          data: {
+            labels: Array.from({length: 30}, (_, i) => i + 1),
+            datasets: [
+              {
+                label: 'Revenue',
+                data: Array.from({length: 30}, () => Math.round(200 + Math.random() * 300)),
+                borderColor: b.b600,
+                backgroundColor: b.b600 + '22',
+                tension: 0.35,
+                fill: true,
+              },
+              {
+                label: 'Last period',
+                data: Array.from({length: 30}, () => Math.round(180 + Math.random() * 280)),
+                borderColor: '#08D9D6',
+                backgroundColor: '#08D9D622',
+                tension: 0.35,
+                fill: false,
+                borderDash: [4,4]
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { grid: { display: false }},
+              y: { grid: { color: 'rgba(0,0,0,0.06)' }}
+            },
+            plugins: {
+              legend: { display: true, position: 'bottom' }
+            }
           }
-        }, function(error) {
-          document.getElementById('vault-response').textContent = 'Tokenisation error: ' + JSON.stringify(error);
         });
-      });
-      // Vault charge customer
-      const vaultChargeBtn = document.getElementById('vault-charge-submit');
-      if (vaultChargeBtn) vaultChargeBtn.addEventListener('click', async () => {
-        const payload = {
-          customer_vault_id: document.getElementById('vault-id').value,
-          amount: document.getElementById('vault-charge-amount').value
-        };
-        try {
-          const res = await fetch('/.netlify/functions/chargeCustomerVault', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          const text = await res.text();
-          document.getElementById('vault-charge-response').textContent = text;
-        } catch (err) {
-          document.getElementById('vault-charge-response').textContent = 'Error: ' + err;
+      }
+
+      if (catCtx) {
+        const b = brand();
+        new Chart(catCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Accessories','Apparel','Electronics','Home','Other'],
+            datasets: [{
+              label: 'Sales',
+              data: [32,45,28,22,14],
+              backgroundColor: [b.b600, '#08D9D6', '#A020F0', '#FFD700', '#CC5500']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { grid: { display: false }},
+              y: { grid: { color: 'rgba(0,0,0,0.06)' }}
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+    </script>
+
+    <!-- Personalisation script to greet the logged‑in user -->
+    <script type="module">
+      import { callNmi } from './nmi.js';
+      const headerEl = document.getElementById('welcome-header');
+      const email = localStorage.getItem('userEmail');
+      const gatewayId = localStorage.getItem('gatewayId');
+      if (headerEl) {
+        let greeting = 'Welcome back';
+        if (email) {
+          greeting += ', ' + email.split('@')[0];
+        } else if (gatewayId) {
+          greeting += ` – Gateway ${gatewayId}`;
         }
-      });
-      // Invoice
-      const invoiceBtn = document.getElementById('invoice-create');
-      if (invoiceBtn) invoiceBtn.addEventListener('click', async () => {
-        const payload = {
-          email: document.getElementById('invoice-email').value,
-          amount: document.getElementById('invoice-amount').value
-        };
-        try {
-          const res = await fetch('/.netlify/functions/createInvoice', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          const text = await res.text();
-          document.getElementById('invoice-response').textContent = text;
-        } catch (err) {
-          document.getElementById('invoice-response').textContent = 'Error: ' + err;
-        }
-      });
-      // Merchants: fetch list
-      const merchFetchBtn = document.getElementById('merchants-fetch');
-      if (merchFetchBtn) merchFetchBtn.addEventListener('click', async () => {
-        const pre = document.getElementById('merchants-list');
-        pre.textContent = 'Loading...';
-        try {
-          const res = await fetch('/.netlify/functions/listMerchants');
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Merchants: create
-      const merchCreateBtn = document.getElementById('merchant-create');
-      if (merchCreateBtn) merchCreateBtn.addEventListener('click', async () => {
-        const payload = {
-          company: document.getElementById('merch-business-name').value,
-          owner_first_name: document.getElementById('merch-first-name').value,
-          owner_last_name: document.getElementById('merch-last-name').value,
-          email: document.getElementById('merch-email').value,
-          phone: document.getElementById('merch-phone').value
-        };
-        const pre = document.getElementById('merchant-create-response');
-        pre.textContent = 'Submitting...';
-        try {
-          const res = await fetch('/.netlify/functions/createMerchant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Merchants: generate key
-      const merchKeyBtn = document.getElementById('merchant-key-create');
-      if (merchKeyBtn) merchKeyBtn.addEventListener('click', async () => {
-        const id = document.getElementById('merch-key-id').value;
-        const pre = document.getElementById('merchant-key-response');
-        pre.textContent = 'Submitting...';
-        try {
-          const res = await fetch('/.netlify/functions/generateMerchantKey?merchant_id=' + encodeURIComponent(id));
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Users: fetch list
-      const usersFetchBtn = document.getElementById('users-fetch');
-      if (usersFetchBtn) usersFetchBtn.addEventListener('click', async () => {
-        const merchantId = document.getElementById('list-users-merchant-id').value;
-        const pre = document.getElementById('users-list');
-        pre.textContent = 'Loading...';
-        try {
-          const res = await fetch('/.netlify/functions/listUsers?merchant_id=' + encodeURIComponent(merchantId));
-          const json = await res.json();
-          pre.textContent = JSON.stringify(json, null, 2);
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Users: create
-      const userCreateBtn = document.getElementById('user-create');
-      if (userCreateBtn) userCreateBtn.addEventListener('click', async () => {
-        const payload = {
-          merchant_id: document.getElementById('user-merchant-id').value,
-          username: document.getElementById('user-username').value,
-          email: document.getElementById('user-email').value,
-          first_name: document.getElementById('user-first-name').value,
-          last_name: document.getElementById('user-last-name').value,
-          role: document.getElementById('user-role').value,
-          status: 'active'
-        };
-        const pre = document.getElementById('user-create-response');
-        pre.textContent = 'Submitting...';
-        try {
-          const res = await fetch('/.netlify/functions/createUser', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Billing fetch
-      const billingBtn = document.getElementById('billing-fetch');
-      if (billingBtn) billingBtn.addEventListener('click', async () => {
-        const merchantId = document.getElementById('billing-merchant-id').value;
-        const pre = document.getElementById('billing-response');
-        pre.textContent = 'Loading...';
-        try {
-          const res = await fetch('/.netlify/functions/listBilling?merchant_id=' + encodeURIComponent(merchantId));
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-      // Commission fetch
-      const commissionBtn = document.getElementById('commission-fetch');
-      if (commissionBtn) commissionBtn.addEventListener('click', async () => {
-        const merchantId = document.getElementById('commission-merchant-id').value;
-        const pre = document.getElementById('commission-response');
-        pre.textContent = 'Loading...';
-        try {
-          const res = await fetch('/.netlify/functions/listCommission?merchant_id=' + encodeURIComponent(merchantId));
-          const text = await res.text();
-          pre.textContent = text;
-        } catch (err) {
-          pre.textContent = 'Error: ' + err;
-        }
-      });
-    });
-  </script>
-</body>
+        headerEl.textContent = greeting + '!';
+      }
+    </script>
+  </body>
 </html>

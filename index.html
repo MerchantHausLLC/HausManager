@@ -1,23 +1,316 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=/public/login.html">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Redirecting…</title>
-    <style>
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        background-color: #0f172a;
-        color: #94a3b8;
-        font-family: sans-serif;
+    <title>RM – Sign In</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'Apple Color Emoji', 'Segoe UI Emoji'],
+        },
+        keyframes: {
+          gradientMove: {
+            '0%': { backgroundPosition: '0% 50%' },
+            '50%': { backgroundPosition: '100% 50%' },
+            '100%': { backgroundPosition: '0% 50%' },
+          },
+          fadeInUp: {
+            '0%': { opacity: '0', transform: 'translateY(6px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' },
+          }
+        },
+        animation: {
+          'gradient-move': 'gradientMove 6s ease infinite',
+          'fade-in-up': 'fadeInUp 300ms ease forwards',
+        },
+        boxShadow: {
+          soft: '0 4px 20px rgba(0,0,0,0.06)'
+        }
       }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --brand-400: #ef3c5b;
+    --brand-600: #dc2743;
+    --brand-700: #c21b35;
+
+    --accent-yellow: #FFD700;
+    --accent-green: #39FF14;
+    --accent-cyan:   #08D9D6;
+    --accent-purple: #A020F0;
+    --accent-orange: #CC5500;
+
+    --bg-app: #f8fafc;
+    --text-main: #0f172a;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg,
+      var(--accent-yellow),
+      var(--accent-green),
+      var(--accent-cyan),
+      var(--accent-purple),
+      var(--accent-orange)
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientMove 6s ease infinite;
+  }
+
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-400, #ef3c5b, 0.6);
+  }
+
+  .brand-sheen {
+    background-image:
+      radial-gradient( at 20% 20%, rgba(255,255,255,0.12) 0px, transparent 30% ),
+      radial-gradient( at 80% 0%, rgba(255,255,255,0.08) 0px, transparent 40% );
+  }
+</style>
+
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif; }
     </style>
   </head>
-  <body>
-    <p>Redirecting you to the new login experience…</p>
+  <body class="h-full bg-[var(--bg-app)] text-slate-900">
+    <!-- Mobile header (brand) -->
+    <header class="md:hidden flex items-center justify-between p-4">
+      <div class="flex items-center gap-2">
+        <img src="./assets/brand.svg" alt="RM" class="h-6 w-6" />
+        <span class="text-xl font-semibold gradient-text">Retail Manager</span>
+      </div>
+      <a href="#" class="text-sm font-medium text-[var(--brand-600)] hover:text-[var(--brand-700)]">Need help?</a>
+    </header>
+
+    <main class="min-h-[calc(100vh-64px)] md:min-h-screen md:grid md:grid-cols-2">
+      <!-- Brand panel -->
+      <section aria-hidden="true" class="hidden md:flex relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-[var(--brand-600)] via-[#7c3aed] to-[#0ea5e9] opacity-90"></div>
+        <div class="absolute inset-0 brand-sheen"></div>
+        <div class="relative z-10 flex flex-col items-center justify-center p-12 text-white">
+          <div class="flex items-center gap-3 mb-6 animate-fade-in-up">
+            <img src="./assets/brand.svg" alt="RM" class="h-10 w-10 drop-shadow" />
+            <h1 class="text-3xl font-semibold">
+              <span class="gradient-text">Retail Manager</span>
+            </h1>
+          </div>
+          <p class="max-w-md text-white/90 text-center">
+            A clean, contemporary CRM for inventory, sales, subscriptions and reports—white‑label ready.
+          </p>
+        </div>
+      </section>
+
+      <!-- Auth panel -->
+      <section class="flex items-center justify-center py-12 px-6">
+        <div class="w-full max-w-md">
+          <!-- Logo -->
+          <div class="mb-8 text-center md:text-left">
+            <img src="./assets/brand.svg" alt="RM" class="h-8 w-8 inline-block align-middle mr-2" data-logo />
+            <span class="align-middle text-2xl font-semibold gradient-text">Retail Manager</span>
+          </div>
+
+          <!-- Step 1: Credentials -->
+          <div id="auth-step-1" class="bg-white shadow-soft rounded-xl p-6 md:p-8">
+            <h2 class="text-xl font-semibold mb-1">Sign in</h2>
+            <p class="text-sm text-slate-600 mb-6">Welcome back! Please enter your details.</p>
+
+            <form id="login-form" class="space-y-4" novalidate>
+              <!-- Gateway ID -->
+              <div>
+                <label for="gateway-id" class="block text-sm font-medium text-slate-700">Gateway ID</label>
+                <input id="gateway-id" name="gateway-id" type="text" autocomplete="off" required
+                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
+                       placeholder="e.g. GW123456" />
+              </div>
+
+              <!-- API Key -->
+              <div>
+                <label for="api-key" class="block text-sm font-medium text-slate-700">API Key</label>
+                <input id="api-key" name="api-key" type="password" autocomplete="off" required
+                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
+                       placeholder="Your NMI v4 API Key" />
+              </div>
+
+              <!-- Email (optional) -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-slate-700">Email (optional)</label>
+                <input id="email" name="email" type="email" autocomplete="username"
+                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
+                       placeholder="you@company.com" />
+              </div>
+
+              <!-- Password (optional) -->
+              <div>
+                <div class="flex items-center justify-between">
+                  <label for="password" class="block text-sm font-medium text-slate-700">Password (optional)</label>
+                  <a href="#" class="text-sm font-medium text-[var(--brand-600)] hover:text-[var(--brand-700)]">Forgot password?</a>
+                </div>
+                <input id="password" name="password" type="password" autocomplete="current-password"
+                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
+                       placeholder="••••••••" />
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label class="inline-flex items-center gap-2 select-none text-sm">
+                  <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-[var(--brand-600)] focus:ring-[var(--brand-400)]" />
+                  Remember me
+                </label>
+                <!-- Theme quick test -->
+                <div class="text-xs text-slate-500">
+                  Theme test:
+                  <button type="button" class="underline decoration-dotted hover:text-slate-700" onclick="setTheme(presets.default)">Default</button> ·
+                  <button type="button" class="underline decoration-dotted hover:text-slate-700" onclick="setTheme(presets.emerald)">Emerald</button> ·
+                  <button type="button" class="underline decoration-dotted hover:text-slate-700" onclick="setTheme(presets.indigo)">Indigo</button>
+                </div>
+              </div>
+
+              <button id="signin-btn" type="submit"
+                class="w-full inline-flex items-center justify-center rounded-md bg-[var(--brand-600)] px-4 py-2.5 text-white font-medium shadow-sm hover:bg-[var(--brand-700)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-400)]">
+                Sign In
+              </button>
+
+              <p class="text-xs text-slate-500 text-center">By continuing, you agree to our Terms & Privacy.</p>
+            </form>
+          </div>
+
+          <!-- Step 2: 2FA -->
+          <div id="auth-step-2" class="hidden bg-white shadow-soft rounded-xl p-6 md:p-8 mt-6 animate-fade-in-up" aria-live="polite">
+            <h2 class="text-xl font-semibold mb-1">Two‑Factor Authentication</h2>
+            <p class="text-sm text-slate-600 mb-6">Enter the 6‑digit code sent to your device.</p>
+
+            <form id="twofa-form" class="space-y-4" novalidate>
+              <div>
+                <label for="code" class="block text-sm font-medium text-slate-700">One‑time code</label>
+                <input id="code" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" required
+                       class="mt-1 tracking-widest text-center w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
+                       placeholder="••••••" />
+                <p class="mt-2 text-xs text-slate-500">Having trouble? <a href="#" class="text-[var(--brand-600)] hover:text-[var(--brand-700)]">Resend code</a></p>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button type="button" id="back-btn"
+                  class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-700 font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[var(--brand-400)]">
+                  Back
+                </button>
+                <button id="verify-btn" type="submit"
+                  class="flex-1 inline-flex items-center justify-center rounded-md bg-[var(--brand-600)] px-4 py-2.5 text-white font-medium shadow-sm hover:bg-[var(--brand-700)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-400)]">
+                  Verify & Continue
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <p class="mt-8 text-center text-sm text-slate-500">© <span id="year"></span> Retail Manager</p>
+        </div>
+      </section>
+    </main>
+
+<script>
+  function setTheme({ brand400, brand600, brand700, logoUrl } = {}) {
+    const root = document.documentElement;
+    if (brand400) root.style.setProperty('--brand-400', brand400);
+    if (brand600) root.style.setProperty('--brand-600', brand600);
+    if (brand700) root.style.setProperty('--brand-700', brand700);
+    if (logoUrl)  {
+      const logos = document.querySelectorAll('[data-logo]');
+      logos.forEach(el => { el.src = logoUrl; el.alt = 'Client Logo'; });
+    }
+  }
+
+  const presets = {
+    default: { brand400: '#ef3c5b', brand600: '#dc2743', brand700: '#c21b35' },
+    emerald: { brand400: '#34d399', brand600: '#059669', brand700: '#047857' },
+    indigo:  { brand400: '#818cf8', brand600: '#4f46e5', brand700: '#4338ca' },
+    teal:    { brand400: '#5eead4', brand600: '#14b8a6', brand700: '#0f766e' },
+  };
+</script>
+
+    <script>
+      const step1 = document.getElementById('auth-step-1');
+      const step2 = document.getElementById('auth-step-2');
+      const loginForm = document.getElementById('login-form');
+      const twofaForm = document.getElementById('twofa-form');
+      const backBtn = document.getElementById('back-btn');
+      const yearEl = document.getElementById('year');
+      yearEl.textContent = new Date().getFullYear();
+
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        document.getElementById('code').focus();
+      });
+
+      backBtn.addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step1.classList.remove('hidden');
+        document.getElementById('email').focus();
+      });
+
+      twofaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        window.location.href = 'dashboard.html';
+      });
+    </script>
+    <!-- Theme and authentication scripts -->
+    <script>
+      // Theme utility similar to dashboard
+      function setTheme({ brand400, brand600, brand700, logoUrl } = {}) {
+        const root = document.documentElement;
+        if (brand400) root.style.setProperty('--brand-400', brand400);
+        if (brand600) root.style.setProperty('--brand-600', brand600);
+        if (brand700) root.style.setProperty('--brand-700', brand700);
+        if (logoUrl) {
+          const logos = document.querySelectorAll('[data-logo]');
+          logos.forEach(el => { el.src = logoUrl; el.alt = 'Client Logo'; });
+        }
+      }
+      const presets = {
+        default: { brand400: '#ef3c5b', brand600: '#dc2743', brand700: '#c21b35' },
+        emerald: { brand400: '#34d399', brand600: '#059669', brand700: '#047857' },
+        indigo:  { brand400: '#818cf8', brand600: '#4f46e5', brand700: '#4338ca' },
+        teal:    { brand400: '#5eead4', brand600: '#14b8a6', brand700: '#0f766e' },
+      };
+
+      // Handle login form submission
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('login-form');
+        form?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const gatewayId = document.getElementById('gateway-id').value.trim();
+          const apiKey = document.getElementById('api-key').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+          if (!gatewayId || !apiKey) {
+            alert('Please enter your Gateway ID and API Key');
+            return;
+          }
+          // Persist credentials in localStorage for later API calls
+          localStorage.setItem('gatewayId', gatewayId);
+          localStorage.setItem('apiKey', apiKey);
+          if (email) localStorage.setItem('userEmail', email);
+          if (password) localStorage.setItem('userPassword', password);
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('userType', 'merchant');
+          // Redirect to dashboard
+          window.location.href = 'dashboard.html';
+        });
+      });
+    </script>
   </body>
 </html>

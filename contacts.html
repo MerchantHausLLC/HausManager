@@ -1,62 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>Contacts — MerchantHaus CRM</title>
-  <link rel="stylesheet" href="assets/os-shell.css">
-  <link rel="stylesheet" href="assets/app.css"> <!-- MerchantHaus theme overrides -->
-  <style>
-    /* Ensure body text and buttons inherit correct theme */
-    body { color: var(--ink, #f5f5f5); }
-    h1, h3 { color: var(--mh-text, #e5e7eb); }
-    table th, table td { color: var(--mh-text, #e5e7eb); }
-    button { background: var(--mh-brand-600, #dc2743); color: white; border: none; }
-    button:hover { background: var(--mh-brand-700, #c21b35); }
-  </style>
-</head>
-<body>
-  <div class="bg"></div>
-  <div class="veil"></div>
-  <header>
-    <div class="brand"><div class="logo"></div><div class="title">MerchantHaus CRM</div></div>
-    <div style="display:flex; gap:8px; align-items:center">
-      <button id="toggleMute" class="btn">🔊 Sound</button>
-      <button id="openSearch" class="btn">Search</button>
-    </div>
-  </header>
-
-  <main data-os-panel>
-    <!-- Contacts content -->
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
-      <h1>Contacts</h1>
-      <button>Add contact</button>
-    </div>
-    <section class="mh-card" style="padding:1rem;">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-        <h3>Customers</h3>
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RM – Contacts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif; }
+    </style>
+  </head>
+  <body class="h-full bg-[var(--bg-app)] text-slate-900">
+    <header class="flex items-center justify-between p-4 border-b bg-white">
+      <div class="flex items-center gap-2">
+        <img src="./assets/brand.svg" alt="RM" class="h-6 w-6" />
+        <span class="text-lg font-semibold gradient-text">Retail Manager</span>
       </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%; font-size:0.9rem; border-collapse:collapse;">
-          <thead style="color:var(--mh-muted,#9ca3af); text-align:left;">
-            <tr style="border-bottom:1px solid var(--mh-border,#1f2937);">
-              <th style="padding:0.5rem 1rem;">Customer</th>
-              <th style="padding:0.5rem 1rem;">Email</th>
-              <th style="padding:0.5rem 1rem;">Phone</th>
-              <th style="padding:0.5rem 1rem;">LTV</th>
-              <th style="padding:0.5rem 1rem;">Last Order</th>
-              <th style="padding:0.5rem 1rem;"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Existing rows -->
-          </tbody>
-        </table>
+      <nav class="space-x-4 text-sm">
+        <a href="dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="inventory.html" class="hover:underline">Inventory</a>
+        <a href="products.html" class="hover:underline">Products</a>
+        <a href="orders.html" class="hover:underline">Orders</a>
+        <a href="contacts.html" class="font-semibold text-[var(--brand-700)]">Contacts</a>
+        <a href="transactions.html" class="hover:underline">Transactions</a>
+        <a href="subscriptions.html" class="hover:underline">Subscriptions</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="settings.html" class="hover:underline">Settings</a>
+      </nav>
+    </header>
+    <main class="p-6">
+      <h1 class="text-2xl font-semibold mb-4">Contacts</h1>
+      <p class="mb-4 text-slate-600">Store your customer and supplier information here. In the future this will sync with your merchant account.</p>
+      <div class="border rounded-lg p-4 bg-white shadow">
+        <p class="text-slate-500">Contact management is coming soon.</p>
       </div>
-    </section>
-  </main>
-
-  <div class="toast"></div>
-  <div class="radial"></div>
-  <script src="assets/os-shell.js"></script>
-</body>
+    </main>
+  </body>
 </html>

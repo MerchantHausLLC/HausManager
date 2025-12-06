@@ -1,238 +1,62 @@
 <!doctype html>
-<html lang="en" class="h-full dark">
-<head>
+<html lang="en" class="h-full">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Merchant Haus – Settings</title>
-
+    <title>RM – Settings</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Lexend:wght@100;400&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif; }
+    </style>
+  </head>
+  <body class="h-full bg-[var(--bg-app)] text-slate-900">
+    <header class="flex items-center justify-between p-4 border-b bg-white">
+      <div class="flex items-center gap-2">
+        <img src="./assets/brand.svg" alt="RM" class="h-6 w-6" />
+        <span class="text-lg font-semibold gradient-text">Retail Manager</span>
+      </div>
+      <nav class="space-x-4 text-sm">
+        <a href="dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="inventory.html" class="hover:underline">Inventory</a>
+        <a href="products.html" class="hover:underline">Products</a>
+        <a href="orders.html" class="hover:underline">Orders</a>
+        <a href="contacts.html" class="hover:underline">Contacts</a>
+        <a href="transactions.html" class="hover:underline">Transactions</a>
+        <a href="subscriptions.html" class="hover:underline">Subscriptions</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="settings.html" class="font-semibold text-[var(--brand-700)]">Settings</a>
+      </nav>
+    </header>
+    <main class="p-6">
+      <h1 class="text-2xl font-semibold mb-4">Settings</h1>
+      <p class="mb-4 text-slate-600">Configure application preferences and theme.</p>
+      <div class="border rounded-lg p-4 bg-white shadow">
+        <p class="text-slate-500 mb-4">Choose a colour theme:</p>
+        <div class="flex gap-4">
+          <button onclick="setTheme(presets.default)" class="px-4 py-2 rounded-md border border-slate-300">Default</button>
+          <button onclick="setTheme(presets.emerald)" class="px-4 py-2 rounded-md border border-slate-300">Emerald</button>
+          <button onclick="setTheme(presets.indigo)" class="px-4 py-2 rounded-md border border-slate-300">Indigo</button>
+          <button onclick="setTheme(presets.teal)" class="px-4 py-2 rounded-md border border-slate-300">Teal</button>
+        </div>
+      </div>
+    </main>
     <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Lexend', 'ui-sans-serif', 'system-ui'],
-              ubuntu: ['Ubuntu', 'sans-serif']
-            },
-            colors: {
-                brand: { 600:'#dc2743', 700:'#c21b35', 400:'#ef3c5b' },
-                'brand-green': '#6dffca'
-            },
-            keyframes: {
-              gradientMove: {
-                '0%': { backgroundPosition: '0% 50%' },
-                '50%': { backgroundPosition: '100% 50%' },
-                '100%': { backgroundPosition: '0% 50%' },
-              },
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(6px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            },
-            animation: {
-              'gradient-move': 'gradientMove 4s ease infinite',
-              'fade-in-up': 'fadeInUp 300ms ease forwards',
-            },
-            boxShadow: {
-              soft: '0 4px 20px rgba(0,0,0,0.06)'
-            }
-          }
-        }
+      // reuse setTheme and presets definitions from dashboard
+      function setTheme({ brand400, brand600, brand700 } = {}) {
+        const root = document.documentElement;
+        if (brand400) root.style.setProperty('--brand-400', brand400);
+        if (brand600) root.style.setProperty('--brand-600', brand600);
+        if (brand700) root.style.setProperty('--brand-700', brand700);
       }
+      const presets = {
+        default: { brand400: '#ef3c5b', brand600: '#dc2743', brand700: '#c21b35' },
+        emerald: { brand400: '#34d399', brand600: '#059669', brand700: '#047857' },
+        indigo:  { brand400: '#818cf8', brand600: '#4f46e5', brand700: '#4338ca' },
+        teal:    { brand400: '#5eead4', brand600: '#14b8a6', brand700: '#0f766e' },
+      };
     </script>
-    <link rel="stylesheet" href="assets/app.css">
-</head>
-<body class="h-full text-slate-100">
-    <div class="flex min-h-screen">
-      <div id="mobile-overlay" class="fixed inset-0 bg-black/60 z-30 hidden"></div>
-      <aside id="sidebar" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-        <div class="h-16 flex items-center gap-3 px-4 border-b border-[#2a2a2a]">
-          <img src="2.png" alt="Merchant Haus" class="h-8 w-8" data-logo />
-          <div>
-            <span class="text-lg font-bold font-ubuntu grad-text">Merchant Haus</span>
-            <span class="block text-sm font-semibold text-slate-400">Retail Manager</span>
-          </div>
-        </div>
-        <nav class="p-4 space-y-1">
-          <a data-nav href="dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.5"></path><path d="M19 10v9a1 1 0 0 1-1 1h-4v-6H10v6H6a1 1 0 0 1-1-1v-9" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Dashboard
-          </a>
-          <a data-nav href="inventory.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="14" y="4" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="3" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect><rect x="14" y="15" width="7" height="7" stroke="currentColor" stroke-width="1.5"></rect></svg>
-            Inventory
-          </a>
-          <a data-nav href="products.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Products
-          </a>
-          <a data-nav href="orders.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M6 6h12l1 4H5l1-4Zm-1 4h14l-1.2 8.4a1 1 0 0 1-.99.86H7.19a1 1 0 0 1-.99-.86L5 10Zm6 3v3" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Sales / Orders
-          </a>
-          <a data-nav href="contacts.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M7 8a5 5 0 1 0 10 0A5 5 0 0 0 7 8Z" stroke="currentColor" stroke-width="1.5"></path><path d="M3 20a9 9 0 0 1 18 0" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Contacts
-          </a>
-          <a data-nav href="transactions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M3 9h18" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Transactions
-          </a>
-          <a data-nav href="subscriptions.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M8 7h8M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Subscriptions
-          </a>
-          <a data-nav href="reports.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800 hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a1 1 0 0 1 1-1h14M4 19h16M4 19l4-5 4 3 4-6 4 5" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Reports
-          </a>
-          <a data-nav href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-md text-white bg-brand-600/20">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm9 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="1.5"></path></svg>
-            Settings
-          </a>
-        </nav>
-      </aside>
-
-      <div class="flex-1 flex flex-col min-w-0">
-        <header class="h-16 header-glass border-b border-[#2a2a2a] flex items-center justify-between px-4 md:px-6">
-          <div class="flex items-center gap-3">
-            <button id="hamburger" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md hover:bg-slate-800" aria-label="Open menu">
-              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5"></path></svg>
-            </button>
-            <div class="hidden md:block text-sm text-slate-400">Dashboard</div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div class="relative hidden md:block">
-              <input type="search" placeholder="Search…" class="w-64 rounded-md border border-slate-700 bg-slate-900/30 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
-              <svg class="h-4 w-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle><path d="m20 20-3-3" stroke="currentColor" stroke-width="1.5"></path></svg>
-            </div>
-
-            <button class="relative inline-flex items-center justify-center h-10 w-10 rounded-md hover:bg-slate-800" aria-label="Notifications">
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5" stroke="currentColor" stroke-width="1.5"></path><path d="M9 18a3 3 0 0 0 6 0" stroke="currentColor" stroke-width="1.5"></path></svg>
-              <span class="absolute top-2 right-2 block h-2 w-2 rounded-full bg-brand-600"></span>
-            </button>
-
-            <div class="relative">
-              <button id="profile-btn" class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/30 px-2.5 py-1.5 hover:bg-slate-800">
-                <img src="https://api.dicebear.com/9.x/thumbs/svg?seed=RM" alt="User" class="h-6 w-6 rounded-full">
-                <span class="hidden md:inline text-sm font-medium">Jane Doe</span>
-                <svg class="h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5"></path></svg>
-              </button>
-              <div id="profile-menu" class="hidden absolute right-0 mt-2 w-56 bg-[#1c1c1c] border border-slate-800 rounded-md shadow-lg p-1">
-                <div class="px-3 py-2 text-sm text-slate-400">Signed in as <strong>Admin</strong></div>
-                <a href="#" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-800 text-sm">
-                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-8 9a8 8 0 1 1 16 0H4Z" stroke="currentColor" stroke-width="1.5"></path></svg>
-                  Profile
-                </a>
-                <a href="#" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-800 text-sm">
-                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"></path></svg>
-                  Settings
-                </a>
-                <div class="border-t my-1 border-slate-800"></div>
-                <a href="index.html" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-800 text-sm text-brand-400">
-                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 9l-7 7" stroke="currentColor" stroke-width="1.5"></path></svg>
-                  Sign out
-                </a>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main class="flex-1 p-4 md:p-6 space-y-6">
-
-    <section class="mh-card p-5 mt-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">NMI API</h2>
-        <button type="button" class="mh-btn" data-theme-toggle title="Toggle theme">Toggle Theme</button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm mb-1">API Key <span class="text-xs text-slate-400">(stored in your browser)</span></label>
-          <input id="nmiApiKey" type="password" class="mh-input" placeholder="Paste key (Bearer token)">
-        </div>
-        <div>
-          <label class="block text-sm mb-1">Environment</label>
-          <select id="nmiEnv" class="mh-input">
-            <option value="prod">Production</option>
-            <option value="test">Test</option>
-          </select>
-        </div>
-        <div class="flex items-end gap-2">
-          <button id="saveNmi" class="mh-btn">Save</button>
-          <button id="testNmi" class="mh-btn" style="background:linear-gradient(90deg,#1e40af,#0ea5e9)">Test</button>
-          <span id="nmiStatus" class="text-sm text-slate-400 ml-2"></span>
-        </div>
-      </div>
-      <p class="text-sm text-slate-400 mt-3">Keys inherit the permissions of the user that created them. For partner/merchant API keys and scopes, see the official docs.</p>
-    </section>
-    
-<div class="flex items-center justify-between"><h1 class="text-xl font-semibold">Settings</h1></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-  <div class="bg-slate-900/40 border border-slate-800 rounded-lg p-4">
-    <h4 class="font-semibold mb-2">Profile</h4>
-    <div class="grid grid-cols-2 gap-2">
-      <input placeholder="Full name" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="Email" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="Phone" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="Company" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-    </div>
-    <div class="mt-3"><button class="rounded-md bg-brand-600/20 px-3 py-1.5 text-sm hover:bg-brand-700/30">Save</button></div>
-  </div>
-  <div class="bg-slate-900/40 border border-slate-800 rounded-lg p-4">
-    <h4 class="font-semibold mb-2">Branding</h4>
-    <div class="space-y-2">
-      <div><label class="text-sm text-slate-400">Accent colour</label><input type="color" value="#dc2743" class="block mt-1 h-9 w-16 bg-transparent border border-slate-800 rounded"></div>
-      <div><label class="text-sm text-slate-400">Logo</label><div class="mt-1 flex items-center gap-2"><div class="h-10 w-10 bg-slate-800/50 rounded"></div><button class="rounded-md border border-slate-800 px-3 py-1.5 text-sm hover:bg-slate-800">Upload</button></div></div>
-    </div>
-  </div>
-  <div class="bg-slate-900/40 border border-slate-800 rounded-lg p-4 lg:col-span-2">
-    <h4 class="font-semibold mb-2">Billing</h4>
-    <div class="grid grid-cols-2 gap-2">
-      <input placeholder="Cardholder name" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="Card number" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="Expiry (MM/YY)" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-      <input placeholder="CVC" class="rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm">
-    </div>
-    <div class="mt-3"><button class="rounded-md bg-brand-600/20 px-3 py-1.5 text-sm hover:bg-brand-700/30">Update payment method</button></div>
-  </div>
-</div>
-</main>
-      </div>
-    </div>
-
-    
-<script>
-
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('mobile-overlay');
-      const hamburger = document.getElementById('hamburger');
-      const profileBtn = document.getElementById('profile-btn');
-      const profileMenu = document.getElementById('profile-menu');
-
-      hamburger?.addEventListener('click', () => { 
-        sidebar.classList.toggle('-translate-x-full'); 
-        overlay.classList.toggle('hidden');
-      });
-      overlay?.addEventListener('click', () => { 
-        sidebar.classList.add('-translate-x-full'); 
-        overlay.classList.add('hidden');
-      });
-      profileBtn?.addEventListener('click', () => {
-        profileMenu.classList.toggle('hidden');
-      });
-      document.addEventListener('click', (e) => {
-        if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-          profileMenu.classList.add('hidden');
-        }
-      });
-
-      
-    </script>
-  <script src="assets/app.js"></script>
-</body>
+  </body>
 </html>
