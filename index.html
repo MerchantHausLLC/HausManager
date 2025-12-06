@@ -130,37 +130,19 @@
             <p class="text-sm text-slate-600 mb-6">Welcome back! Please enter your details.</p>
 
             <form id="login-form" class="space-y-4" novalidate>
-              <!-- Gateway ID -->
               <div>
-                <label for="gateway-id" class="block text-sm font-medium text-slate-700">Gateway ID</label>
-                <input id="gateway-id" name="gateway-id" type="text" autocomplete="off" required
-                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
-                       placeholder="e.g. GW123456" />
-              </div>
-
-              <!-- API Key -->
-              <div>
-                <label for="api-key" class="block text-sm font-medium text-slate-700">API Key</label>
-                <input id="api-key" name="api-key" type="password" autocomplete="off" required
-                       class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
-                       placeholder="Your NMI v4 API Key" />
-              </div>
-
-              <!-- Email (optional) -->
-              <div>
-                <label for="email" class="block text-sm font-medium text-slate-700">Email (optional)</label>
-                <input id="email" name="email" type="email" autocomplete="username"
+                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="email" name="email" type="email" autocomplete="username" required
                        class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
                        placeholder="you@company.com" />
               </div>
 
-              <!-- Password (optional) -->
               <div>
                 <div class="flex items-center justify-between">
-                  <label for="password" class="block text-sm font-medium text-slate-700">Password (optional)</label>
+                  <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
                   <a href="#" class="text-sm font-medium text-[var(--brand-600)] hover:text-[var(--brand-700)]">Forgot password?</a>
                 </div>
-                <input id="password" name="password" type="password" autocomplete="current-password"
+                <input id="password" name="password" type="password" autocomplete="current-password" required
                        class="mt-1 w-full rounded-md border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[var(--brand-400)]"
                        placeholder="••••••••" />
               </div>
@@ -265,51 +247,6 @@
       twofaForm.addEventListener('submit', (e) => {
         e.preventDefault();
         window.location.href = 'dashboard.html';
-      });
-    </script>
-    <!-- Theme and authentication scripts -->
-    <script>
-      // Theme utility similar to dashboard
-      function setTheme({ brand400, brand600, brand700, logoUrl } = {}) {
-        const root = document.documentElement;
-        if (brand400) root.style.setProperty('--brand-400', brand400);
-        if (brand600) root.style.setProperty('--brand-600', brand600);
-        if (brand700) root.style.setProperty('--brand-700', brand700);
-        if (logoUrl) {
-          const logos = document.querySelectorAll('[data-logo]');
-          logos.forEach(el => { el.src = logoUrl; el.alt = 'Client Logo'; });
-        }
-      }
-      const presets = {
-        default: { brand400: '#ef3c5b', brand600: '#dc2743', brand700: '#c21b35' },
-        emerald: { brand400: '#34d399', brand600: '#059669', brand700: '#047857' },
-        indigo:  { brand400: '#818cf8', brand600: '#4f46e5', brand700: '#4338ca' },
-        teal:    { brand400: '#5eead4', brand600: '#14b8a6', brand700: '#0f766e' },
-      };
-
-      // Handle login form submission
-      document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('login-form');
-        form?.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const gatewayId = document.getElementById('gateway-id').value.trim();
-          const apiKey = document.getElementById('api-key').value.trim();
-          const email = document.getElementById('email').value.trim();
-          const password = document.getElementById('password').value;
-          if (!gatewayId || !apiKey) {
-            alert('Please enter your Gateway ID and API Key');
-            return;
-          }
-          // Persist credentials in localStorage for later API calls
-          localStorage.setItem('gatewayId', gatewayId);
-          localStorage.setItem('apiKey', apiKey);
-          if (email) localStorage.setItem('userEmail', email);
-          if (password) localStorage.setItem('userPassword', password);
-          localStorage.setItem('loggedIn', 'true');
-          localStorage.setItem('userType', 'merchant');
-          // Redirect to dashboard
-          window.location.href = 'dashboard.html';
-        });
       });
     </script>
   </body>
